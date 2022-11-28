@@ -7,12 +7,16 @@
 <body>
 <form action="#" method="post">
 
-    <input name="text">
-    <button type="submit" class="btn btn-primary" id="buttonLogin">Sign In</button>
+    {{ form.first_query }} <br>
+    {{ form.submit }}
 
     <p id="linkRegister">
         Don't Have an Account?
-        <a href="{{ url_for('bp_home.home_get') }}">Sign up</a>
+        <a href="{{ url_for('bp_auth.register') }}">Sign up</a>
+    </p>
+    <p id="linkLogin">
+        You already have an account?
+        <a href="{{ url_for('bp_auth.login') }}">Sign in</a>
     </p>
 </form>
 </body>
