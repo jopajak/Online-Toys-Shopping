@@ -8,7 +8,7 @@ def create_app():
                 )
 
     # Load config from file config.py
-    #app.config.from_pyfile('config.py')
+    app.config.from_pyfile('config.py')
 
     # Turn on debug mode
     app.debug = True
@@ -17,6 +17,9 @@ def create_app():
     # Register blueprints (views)
     from .views.home import bp as bp_home
     app.register_blueprint(bp_home)
+
+    from .views.auth import bp as bp_auth
+    app.register_blueprint(bp_auth)
 
     # for localhost only
     app.run()
