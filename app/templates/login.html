@@ -5,6 +5,21 @@
     <title>Register</title>
 </head>
 <body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% if form.errors %}
+        {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+            {% for error in field_errors %}
+                {{ error }}
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
     <form method="POST" action="#">
         {{ form.csrf_token }}
         {{ form.email.label }} {{form.email}} <br>

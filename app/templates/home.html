@@ -5,6 +5,11 @@
     <title>Title</title>
 </head>
 <body>
+    {% if user.is_authenticated %}
+        <p>
+            Welcome: {{user.email}}
+        </p>
+    {% endif %}
 <form action="#" method="post">
 
     {{ form.first_query }} <br>
