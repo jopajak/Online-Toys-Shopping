@@ -5,6 +5,7 @@ from flask_login import login_user, logout_user, current_user
 from ..forms import RegistrationForm, LoginForm
 from ..models import User
 from ..app import db
+from ..email import send_email
 
 
 bp = Blueprint('bp_auth', __name__)
@@ -63,4 +64,14 @@ def login():
 def logout_get():
     logout_user()
     flash("You've been successfully logged out.")
+    return redirect(url_for('bp_auth.login'))
+
+
+@bp.route('/test_email')
+def email_post():
+
+    html = render_template('activate.html', confirm_url="123test123")
+    subject = "Please confirm your email"
+    send_email("123@test.com", subject, html)
+
     return redirect(url_for('bp_auth.login'))

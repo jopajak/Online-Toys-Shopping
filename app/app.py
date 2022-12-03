@@ -2,9 +2,11 @@ from flask import Flask, flash, redirect, url_for
 from werkzeug.debug import DebuggedApplication
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_mail import Mail
 
 
 db = SQLAlchemy()
+mail = Mail()
 
 
 def create_app():
@@ -32,6 +34,7 @@ def create_app():
         return redirect(url_for('bp_auth.login'))
 
     db.init_app(app)
+    mail.init_app(app)
 
     from .models import User
 
