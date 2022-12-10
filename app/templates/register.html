@@ -1,32 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Registration</title>
-</head>
+{% extends 'base.html' %}
+{%import "bootstrap/wtf.html" as wtf %}
+{%block title%}
+<title>Register</title>
+{%endblock%}
+{%block content%}
 <body>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-                {{ message }}
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+        <div class="container" style="margin-top: 2%">
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+        </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
     {% if form.errors %}
         {% for field_name, field_errors in form.errors|dictsort if field_errors %}
             {% for error in field_errors %}
+            <div class="alert alert-danger" role="alert">
                 {{ error }}
+            </div>
             {% endfor %}
         {% endfor %}
     {% endif %}
 
-    <form method="POST" action="#">
+    <form class = "forms" method="POST" action="#">
+        <dl>
         {{ form.csrf_token }}
-        {{ form.email.label }} {{form.email}} <br>
-        {{ form.password.label }} {{ form.password }} <br>
-        {{ form.confirm_password.label }} {{ form.confirm_password}} <br>
-        {{ form.submit }}
+        {{wtf.form_field(form.email)}} <br>
+        {{wtf.form_field(form.password) }} <br>
+        {{ wtf.form_field(form.confirm_password)}} <br>
+        <div class="buttons">
+            <button class="btn btn-large btn-login" type="submit">Register</button>
+            <p id="linkRegister">You already have an Account? <a class = "login-link" href="{{ url_for('bp_auth.login') }}">Sign in here</a>
+            </p>
+        </div>
+        </dl>
     </form>
 </body>
-</html>
+{%endblock%}

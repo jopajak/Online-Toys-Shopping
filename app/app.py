@@ -2,6 +2,7 @@ from flask import Flask, flash, redirect, url_for
 from werkzeug.debug import DebuggedApplication
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_bootstrap import Bootstrap
 
 
 db = SQLAlchemy()
@@ -12,6 +13,7 @@ def create_app():
     app = Flask(__name__,
                 instance_relative_config=False
                 )
+    Bootstrap(app)
 
     # Load config from file config.py
     app.config.from_pyfile('config.py')

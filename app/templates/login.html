@@ -1,14 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Register</title>
-</head>
+{% extends 'base.html' %}
+{%import "bootstrap/wtf.html" as wtf %}
+{%block title%}
+<title>Login</title>
+{%endblock%}
+{%block content%}
 <body>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for message in messages %}
-                {{ message }}
+    <div class="container" style="margin-top: 2%">
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                </div>
+    </div>
             {% endfor %}
         {% endif %}
     {% endwith %}
@@ -20,11 +24,18 @@
             {% endfor %}
         {% endfor %}
     {% endif %}
-    <form method="POST" action="#">
+    <form class = "forms" method="POST" action="#">
+        <dl>
         {{ form.csrf_token }}
-        {{ form.email.label }} {{form.email}} <br>
-        {{ form.password.label }} {{ form.password }} <br>
-        {{ form.submit }}
+        {{wtf.form_field(form.email)}} <br>
+        {{wtf.form_field(form.password)}} <br>
+
+        <div class="buttons">
+            <button class="btn btn-large btn-login" type="submit">Login</button>
+            <p id="linkRegister">Don't Have an Account? <a class = "login-link" href="{{ url_for('bp_auth.register') }}">Sign up here</a>
+            </p>
+        </div>
+        </dl>
     </form>
 </body>
-</html>
+{%endblock%}

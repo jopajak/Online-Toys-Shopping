@@ -20,7 +20,7 @@ def register():
 
         user = User.query.filter_by(email=email).first()
         if user:
-            flash(Markup(f'Email address already exists. Go to <a href="{url_for("bp_auth.login")}">login page</a>.'),
+            flash(Markup(f'Email address already exists. Go to <a class="danger-link" href="{url_for("bp_auth.login")}">login page</a>.'),
                   'error')
             return redirect(url_for('bp_auth.register'))
 
@@ -34,7 +34,7 @@ def register():
         flash('Your account has been created you can now log in')
         return redirect(url_for('bp_auth.login'))
 
-    return render_template('register.html', form=form)
+    return render_template('register.html', form=form, user=current_user)
 
 
 @bp.route('/login', methods=['POST', 'GET'])
@@ -56,7 +56,7 @@ def login():
         login_user(user)
         return redirect(url_for('bp_home.home_get'))
 
-    return render_template('login.html', form=form)
+    return render_template('login.html', form=form, user=current_user)
 
 
 @bp.route('/logout')

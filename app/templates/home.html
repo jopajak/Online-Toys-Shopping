@@ -1,28 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    {% if user.is_authenticated %}
-        <p>
-            Welcome: {{user.email}}
-        </p>
-    {% endif %}
-<form action="#" method="post">
-
-    {{ form.first_query }} <br>
-    {{ form.submit }}
-
-    <p id="linkRegister">
-        Don't Have an Account?
-        <a href="{{ url_for('bp_auth.register') }}">Sign up</a>
-    </p>
-    <p id="linkLogin">
-        You already have an account?
-        <a href="{{ url_for('bp_auth.login') }}">Sign in</a>
-    </p>
+{% extends 'base.html' %}
+{%import "bootstrap/wtf.html" as wtf %}
+{%block content%}
+<div class="line">
+    <h1 class='lineUp'>Welcome to CeneoSearch</h1>
+</div>
+<div>
+<form class="forms" action="#" method="post">
+    <dl>
+        {{ wtf.form_field(form.first_query) }} <br>
+        <div class="buttons">
+            <button class="btn btn-large btn-login" type="submit" name="text">Search</button>
+        </div>
+    </dl>
 </form>
-</body>
-</html>
+</div>
+{%endblock%}

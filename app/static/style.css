@@ -1,0 +1,101 @@
+.navbar-custom {
+            background-color: rgb(25, 68, 53);
+            color: white;
+        }
+        .nav-title{
+            text-decoration: none;
+            color: white;
+        }
+        .site-background{
+            background-color: rgba(25, 68, 53,0.88);
+        }
+        .forms{
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            color: white;
+        }
+        .btn-login {
+            margin-left: auto;
+            background-color: rgba(25, 68, 53, 0.99) !important;
+            color: white;
+            margin-bottom: 20px;
+            border: rgba(25, 68, 53, 0.99) !important;
+
+    }
+        .btn-login:hover {
+            background-color: rgba(25, 68, 53, 0.6) !important;
+            color: white;
+            border: rgba(25, 68, 53, 0.8) !important;
+    }
+        .buttons{
+            text-align: center;
+        }
+
+        .login-link{
+             color: rgb(19, 47, 37);
+        }
+
+        .login-link:hover{
+             color: rgb(19, 47, 37);
+        }
+
+        .danger-link{
+             color: rgb(136, 27, 47);
+        }
+
+        .danger-link:hover{
+             color: rgb(136, 27, 47);
+        }
+
+        .fa-circle-user{
+            color:white;
+        }
+
+         .navbar-nav > li > .dropdown-menu {
+             background-color: rgb(25, 68, 53);
+         }
+
+         .dropdown-item {
+            color: white;
+         }
+
+         .line {
+            width: 100%;
+            overflow: hidden;
+            padding: 0;
+            color: white;
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            margin-bottom: 40px;
+    }
+         .lineUp {
+             font-size: 70px ;
+            animation: 3s anim-lineUp ease-out ;
+         }
+            @keyframes anim-lineUp {
+                0% {
+                opacity: 0;
+                transform: translateY(80%);
+            }
+            20% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(0%);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0%);
+            }
+}
+
+        #main-footer{
+            background-color: rgb(25, 68, 53);
+            bottom: 0;
+            position: fixed;
+            width: 100%;
+    }
