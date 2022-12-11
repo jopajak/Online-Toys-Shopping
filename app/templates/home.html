@@ -8,6 +8,18 @@
 <form class="forms" action="#" method="post">
     <dl>
         {{ wtf.form_field(form.first_query) }} <br>
+        <details><summary>add another query field</summary>{{ wtf.form_field(form.first_query) }}
+            <details><summary>add another query field</summary>{{ wtf.form_field(form.first_query) }}
+                <details><summary>add another query field</summary>{{ wtf.form_field(form.first_query) }}
+                    <details><summary>add another query field</summary>{{ wtf.form_field(form.first_query) }}
+                        <details><summary>add another query field</summary>{{ wtf.form_field(form.first_query) }} <br>
+                            <details><summary>add another query field</summary>{{ wtf.form_field(form.first_query) }} <br>
+                                <details><summary>add another query field</summary>{{ wtf.form_field(form.first_query) }} <br>
+                                    <details><summary>add another query field</summary>{{ wtf.form_field(form.first_query) }} <br>
+                                        <details><summary>add another query field</summary>{{ wtf.form_field(form.first_query) }} <br>
+                                        </details></details></details></details></details></details></details></details></details>
+
+
         <div class="buttons">
             <button class="btn btn-large btn-login" type="submit" name="text">Search</button>
         </div>
