@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<style>
+    h1, p{
+        text-align: center;
+    }
+
+</style>
+{% endblock styles %}
+
+{% block body %}
+<h1 class="text-success">Welcome!</h1>
+<br>
+<p>You have not confirmed your account. Please check your inbox (and your spam folder) - you should have received an email with a confirmation link.</p>
+<p>Didn't get the email? <a href="{{ url_for('bp_auth.resend_confirmation') }}">Resend</a>.</p>
+{% endblock body %}

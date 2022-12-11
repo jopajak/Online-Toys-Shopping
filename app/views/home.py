@@ -8,7 +8,7 @@ bp = Blueprint('bp_home', __name__)
 
 @bp.route('/')
 def home_get():
-    form=SearchForm()
+    form = SearchForm()
     return render_template('home.html', form=form, user=current_user)
 
 

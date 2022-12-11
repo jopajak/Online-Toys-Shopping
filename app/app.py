@@ -3,9 +3,11 @@ from werkzeug.debug import DebuggedApplication
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
+from flask_mail import Mail
 
 
 db = SQLAlchemy()
+mail = Mail()
 
 
 def create_app():
@@ -34,6 +36,7 @@ def create_app():
         return redirect(url_for('bp_auth.login'))
 
     db.init_app(app)
+    mail.init_app(app)
 
     from .models import User
 
@@ -51,6 +54,9 @@ def create_app():
 
     from .views.auth import bp as bp_auth
     app.register_blueprint(bp_auth)
+
+    from .views.history import bp as bp_history
+    app.register_blueprint(bp_history)
 
     # for localhost only
     app.run()
