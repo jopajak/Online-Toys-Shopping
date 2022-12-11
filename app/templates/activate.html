@@ -1,0 +1,47 @@
+<style>
+    #bg {
+        background: rgb(34, 34, 34);
+        text-align: center;
+        padding: 10px;
+    }
+
+    p {
+        text-align: center;
+        color: white;
+        font-size: larger;
+    }
+
+    #titleBox{
+        background: rgb(39, 48, 57);
+        padding: 10px
+    }
+
+    button{
+        font-size: x-large;
+        color:white;
+        background:rgb(0, 188, 140);
+        border-style: hidden;
+        border-radius: 25px;
+        width: 200px;
+        height: 75px;
+    }
+
+    a:hover {
+        filter: brightness(85%);
+    }
+</style>
+
+<div id="titleBox">
+    <p>Space hunters</p>
+</div>
+
+<div id="bg">
+    <h1 style="color:rgb(0, 188, 140)">Welcome!</h1>
+    <p>Thanks for signing up. Please click button below to activate your account:</p>
+    <a href="{{ confirm_url }}">
+        <button>Verify</button>
+    </a>
+    <br>
+    <p>We look forward to you joining our community!</p>
+    <p>If you did not attempt to register an account, please ignore this email.</p>
+</div>

@@ -53,5 +53,8 @@ def create_app():
     from .views.auth import bp as bp_auth
     app.register_blueprint(bp_auth)
 
+    from .views.history import bp as bp_history
+    app.register_blueprint(bp_history)
+
     # for localhost only
     app.run()
