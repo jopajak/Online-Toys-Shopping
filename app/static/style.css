@@ -9,6 +9,13 @@
         .site-background{
             background-color: rgba(25, 68, 53,0.88);
         }
+        .empty-site-background{
+            display: grid;
+            justify-content: center;
+            margin-top: 20px;
+            margin-bottom: 40px;
+            background-color: white;
+        }
         .forms{
             display: flex;
             justify-content: center;
