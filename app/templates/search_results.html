@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{%block content%}
+<div class = "text-content">
+    <h1>You searched for:<br></h1>
+    {% for query in queries%}
+    <h4>{{query}}<br></h4>
+    {% endfor %}
+    <h1>In amounts:<br></h1>
+    {% for amount in amounts%}
+    <h4>{{amount}}<br></h4>
+    {% endfor %}
+    {% if filename %}
+    <h4>File: {{filename}}</h4>
+    {% endif %}
+    <h1>With applied filters:<br></h1>
+    {% for filter in filters%}
+    <h4>{{filter}}<br></h4>
+    {% endfor %}
+</div>
+{%endblock%}

@@ -1,29 +1,197 @@
 {% extends 'base.html' %}
 {%import "bootstrap/wtf.html" as wtf %}
 {%block content%}
+<div>
 <div class="line">
     <h1 class='lineUp'>Welcome to CeneoSearch</h1>
 </div>
-<div>
-<form class="forms" action="#" method="post">
-    <dl>
-        {{ wtf.form_field(form.first_query) }} <br>
-        <details><summary>add another query field</summary>{{ wtf.form_field(form.first_query) }}
-            <details><summary>add another query field</summary>{{ wtf.form_field(form.first_query) }}
-                <details><summary>add another query field</summary>{{ wtf.form_field(form.first_query) }}
-                    <details><summary>add another query field</summary>{{ wtf.form_field(form.first_query) }}
-                        <details><summary>add another query field</summary>{{ wtf.form_field(form.first_query) }} <br>
-                            <details><summary>add another query field</summary>{{ wtf.form_field(form.first_query) }} <br>
-                                <details><summary>add another query field</summary>{{ wtf.form_field(form.first_query) }} <br>
-                                    <details><summary>add another query field</summary>{{ wtf.form_field(form.first_query) }} <br>
-                                        <details><summary>add another query field</summary>{{ wtf.form_field(form.first_query) }} <br>
+
+<div class="choose-form" >
+    <div class="col-md-7">
+        <h4>Choose type of your shooping list:</h4>
+        <button id="button1" type="button" class="btn btn-lg btn-form active">Create via form</button>
+        <button id="button2" type="button" class="btn btn-lg btn-form">Add via file</button>
+    </div>
+</div>
+<form class="forms" id="form-list" action="#" method="post">
+    {{ form.csrf_token }}
+    <div class="col-md-5">
+        <h4>Apply filters:</h4>
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active filters" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"  aria-selected="true">Platform to search</a>
+            <a class="nav-item nav-link filters" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"  aria-selected="false">Price</a>
+            <a class="nav-item nav-link filters" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-selected="false">Stores</a>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <p>Search in:</p>
+            {{ wtf.form_field(form.platform) }}
+        </div>
+        <div class="tab-pane fade " id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" >
+            {{ wtf.form_field(form.price_min) }}
+            {{ wtf.form_field(form.price_max) }}
+        </div>
+        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+            {{ wtf.form_field(form.stores_max) }}
+        </div>
+    </div>
+    </div>
+
+    <dl class="col-md-5">
+        <h4>Make a shopping list:</h4>
+        <div class ="row form-row">
+            <div style="width: 76%">
+                {{ wtf.form_field(form.first_query) }}
+            </div>
+            <div style="width: 20%">
+             {{ wtf.form_field(form.first_amount) }}
+            </div>
+        </div>
+        <details><summary>add another item</summary>
+            <div class ="row form-row">
+                <div style="width: 76%">
+                    {{ wtf.form_field(form.second_query) }}
+                </div>
+                <div style="width: 20%">
+                    {{ wtf.form_field(form.second_amount) }}
+            </div>
+            </div>
+            <details><summary>add another item</summary>
+                <div class ="row form-row">
+                    <div style="width: 76%">
+                        {{ wtf.form_field(form.third_query) }}
+                    </div>
+                    <div style="width: 20%">
+                        {{ wtf.form_field(form.third_amount) }}
+                    </div>
+                </div>
+                <details><summary>add another item</summary>
+                    <div class ="row form-row">
+                        <div style="width: 76%">
+                            {{ wtf.form_field(form.fourth_query) }}
+                        </div>
+                        <div style="width: 20%">
+                            {{ wtf.form_field(form.fourth_amount) }}
+                        </div>
+                    </div>
+                    <details><summary>add another item</summary>
+                        <div class ="row form-row">
+                            <div style="width: 76%">
+                                {{ wtf.form_field(form.fifth_query) }}
+                            </div>
+                            <div style="width: 20%">
+                                {{ wtf.form_field(form.fifth_amount) }}
+                            </div>
+                        </div>
+                        <details><summary>add another item</summary>
+                            <div class ="row form-row">
+                                <div style="width: 76%">
+                                    {{ wtf.form_field(form.sixth_query) }}
+                                </div>
+                                <div style="width: 20%">
+                                    {{ wtf.form_field(form.sixth_amount) }}
+                                </div>
+                            </div>
+                            <details><summary>add another item</summary>
+                                <div class ="row form-row">
+                                    <div style="width: 76%">
+                                        {{ wtf.form_field(form.seventh_query) }}
+                                    </div>
+                                    <div style="width: 20%">
+                                        {{ wtf.form_field(form.seventh_amount) }}
+                                    </div>
+                                </div>
+                                <details><summary>add another item</summary>
+                                    <div class ="row form-row">
+                                        <div style="width: 76%">
+                                            {{ wtf.form_field(form.eighth_query) }}
+                                        </div>
+                                        <div style="width: 20%">
+                                            {{ wtf.form_field(form.eighth_amount) }}
+                                        </div>
+                                    </div>
+                                    <details><summary>add another item</summary>
+                                        <div class ="row form-row">
+                                            <div style="width: 76%">
+                                                {{ wtf.form_field(form.ninth_query) }}
+                                            </div>
+                                            <div style="width: 20%">
+                                                {{ wtf.form_field(form.ninth_amount) }}
+                                            </div>
+                                        </div>
+                                        <details><summary>add another item</summary>
+                                            <div class ="row form-row">
+                                                <div style="width: 76%">
+                                                    {{ wtf.form_field(form.tenth_query) }}
+                                                </div>
+                                            <div style="width: 20%">
+                                                    {{ wtf.form_field(form.tenth_amount) }}
+                                            </div>
+                                            </div>
                                         </details></details></details></details></details></details></details></details></details>
 
 
         <div class="buttons">
-            <button class="btn btn-large btn-login" type="submit" name="text">Search</button>
+            <button class="btn btn-large btn-login" type="submit" name="text">Search  <i class="fa-solid fa-magnifying-glass"></i> </button>
+        </div>
+    </dl>
+</form>
+<form class="forms" id="form-file" action="#" method="post" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+    <div class="col-md-5">
+        <h4>Apply filters:</h4>
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab-file" role="tablist">
+            <a class="nav-item nav-link active filters" id="nav-home-tab-file" data-toggle="tab" href="#nav-home-file" role="tab"  aria-selected="true">Platform to search</a>
+            <a class="nav-item nav-link filters" id="nav-profile-tab-file" data-toggle="tab" href="#nav-profile-file" role="tab"  aria-selected="false">Price</a>
+            <a class="nav-item nav-link filters" id="nav-contact-tab-file" data-toggle="tab" href="#nav-contact-file" role="tab" aria-selected="false">Stores</a>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent-file">
+        <div class="tab-pane fade show active" id="nav-home-file" role="tabpanel" aria-labelledby="nav-home-tab">
+            <p>Search in:</p>
+            {{ wtf.form_field(form_file.platform) }}
+        </div>
+        <div class="tab-pane fade " id="nav-profile-file" role="tabpanel" aria-labelledby="nav-profile-tab" >
+            {{ wtf.form_field(form_file.price_min) }}
+            {{ wtf.form_field(form_file.price_max) }}
+        </div>
+        <div class="tab-pane fade" id="nav-contact-file" role="tabpanel" aria-labelledby="nav-contact-tab">
+            {{ wtf.form_field(form_file.stores_max) }}
+        </div>
+    </div>
+    </div>
+    <dl class="col-md-5">
+        <h4>Add your shopping list:</h4>
+        <div class ="row form-row">
+            {{ wtf.form_field(form_file.file) }}
+        </div>
+        <div class="buttons">
+            <button class="btn btn-large btn-login" type="submit" name="text">Search  <i class="fa-solid fa-magnifying-glass"></i> </button>
         </div>
     </dl>
 </form>
 </div>
+</div>
 {%endblock%}
+
+{% block scripts %}
+    <script>
+        const button1 = document.getElementById("button1");
+        const button2 = document.getElementById("button2");
+        const form1 = document.getElementById("form-list");
+        const form2 = document.getElementById("form-file");
+
+        button1.addEventListener("click", function() {
+            form1.style.display = "flex";
+            form2.style.display = "none";
+        });
+
+        button2.addEventListener("click", function() {
+            form1.style.display = "none";
+            form2.style.display = "flex";
+        });
+    </script>
+{% endblock %}

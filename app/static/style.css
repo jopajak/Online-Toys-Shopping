@@ -1,3 +1,12 @@
+html,
+body {
+  height:100%
+}
+
+details{
+    margin-bottom: 20px;
+}
+
 .navbar-custom {
             background-color: rgb(25, 68, 53);
             color: white;
@@ -17,13 +26,54 @@
             margin-bottom: 40px;
             background-color: white;
         }
+
         .forms{
             display: flex;
             justify-content: center;
+            flex-direction: column;
+            align-items:center;
             margin-top: 20px;
             margin-bottom: 20px;
             color: white;
         }
+
+
+
+        .filters{
+            background-color: rgba(25, 68, 53,0.88);
+            color:white;
+        }
+
+        .filters:hover{
+            background-color: rgba(25, 68, 53, 0.6);
+            color: white;
+            border: rgba(25, 68, 53, 0.8);
+        }
+
+
+        .tab-content {
+            padding: 15px;
+            background-color: rgba(25, 68, 53, 0.6);
+            border-color: rgba(25, 68, 53, 0.6);
+            margin-bottom: 5%;
+        }
+
+        .tab-content .tab-pane {
+            color: white;
+            height: auto;
+        }
+
+        .form-row{
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .text-content{
+            color: white;
+            text-align: center;
+        }
+
+
         .btn-login {
             margin-left: auto;
             background-color: rgba(25, 68, 53, 0.99) !important;
@@ -37,6 +87,28 @@
             color: white;
             border: rgba(25, 68, 53, 0.8) !important;
     }
+        .btn-form {
+            background-color: rgba(25, 68, 53, 0.99) !important;
+            color: white;
+            margin-bottom: 20px;
+            border: rgba(25, 68, 53, 0.99) !important;
+            width: 49%;
+        }
+
+        .btn-form:hover {
+            background-color: rgba(25, 68, 53, 0.6) !important;
+            color: white;
+            border: rgba(25, 68, 53, 0.8) !important;
+    }
+        .choose-form {
+            display:flex;
+            justify-content: center;
+            margin-bottom: 3%;
+            color:white;
+    }
+        #form-file{
+            display:none;
+        }
         .buttons{
             text-align: center;
         }
@@ -76,6 +148,7 @@
             color: white;
             display: flex;
             justify-content: center;
+            text-align: center;
             margin-top: 20px;
             margin-bottom: 40px;
     }
@@ -103,7 +176,10 @@
 
         #main-footer{
             background-color: rgb(25, 68, 53);
-            bottom: 0;
-            position: fixed;
+            bottom:0;
+            margin-top:auto;
             width: 100%;
     }
+        #content{
+            margin-bottom:auto;
+        }
