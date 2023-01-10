@@ -13,7 +13,7 @@
         <button id="button2" type="button" class="btn btn-lg btn-form">Add via file</button>
     </div>
 </div>
-<form class="forms" id="form-list" action="#" method="post">
+<form class="forms" id="form-list" action="/search" method="post">
     {{ form.csrf_token }}
     <div class="col-md-5">
         <h4>Apply filters:</h4>
@@ -43,91 +43,91 @@
         <h4>Make a shopping list:</h4>
         <div class ="row form-row">
             <div style="width: 76%">
-                {{ wtf.form_field(form.first_query) }}
+                {{ wtf.form_field(form.query1) }}
             </div>
             <div style="width: 20%">
-             {{ wtf.form_field(form.first_amount) }}
+             {{ wtf.form_field(form.amount1) }}
             </div>
         </div>
         <details><summary>add another item</summary>
             <div class ="row form-row">
                 <div style="width: 76%">
-                    {{ wtf.form_field(form.second_query) }}
+                    {{ wtf.form_field(form.query2) }}
                 </div>
                 <div style="width: 20%">
-                    {{ wtf.form_field(form.second_amount) }}
+                    {{ wtf.form_field(form.amount2) }}
             </div>
             </div>
             <details><summary>add another item</summary>
                 <div class ="row form-row">
                     <div style="width: 76%">
-                        {{ wtf.form_field(form.third_query) }}
+                        {{ wtf.form_field(form.query3) }}
                     </div>
                     <div style="width: 20%">
-                        {{ wtf.form_field(form.third_amount) }}
+                        {{ wtf.form_field(form.amount3) }}
                     </div>
                 </div>
                 <details><summary>add another item</summary>
                     <div class ="row form-row">
                         <div style="width: 76%">
-                            {{ wtf.form_field(form.fourth_query) }}
+                            {{ wtf.form_field(form.query4) }}
                         </div>
                         <div style="width: 20%">
-                            {{ wtf.form_field(form.fourth_amount) }}
+                            {{ wtf.form_field(form.amount4) }}
                         </div>
                     </div>
                     <details><summary>add another item</summary>
                         <div class ="row form-row">
                             <div style="width: 76%">
-                                {{ wtf.form_field(form.fifth_query) }}
+                                {{ wtf.form_field(form.query5) }}
                             </div>
                             <div style="width: 20%">
-                                {{ wtf.form_field(form.fifth_amount) }}
+                                {{ wtf.form_field(form.amount5) }}
                             </div>
                         </div>
                         <details><summary>add another item</summary>
                             <div class ="row form-row">
                                 <div style="width: 76%">
-                                    {{ wtf.form_field(form.sixth_query) }}
+                                    {{ wtf.form_field(form.query6) }}
                                 </div>
                                 <div style="width: 20%">
-                                    {{ wtf.form_field(form.sixth_amount) }}
+                                    {{ wtf.form_field(form.amount6) }}
                                 </div>
                             </div>
                             <details><summary>add another item</summary>
                                 <div class ="row form-row">
                                     <div style="width: 76%">
-                                        {{ wtf.form_field(form.seventh_query) }}
+                                        {{ wtf.form_field(form.query7) }}
                                     </div>
                                     <div style="width: 20%">
-                                        {{ wtf.form_field(form.seventh_amount) }}
+                                        {{ wtf.form_field(form.amount7) }}
                                     </div>
                                 </div>
                                 <details><summary>add another item</summary>
                                     <div class ="row form-row">
                                         <div style="width: 76%">
-                                            {{ wtf.form_field(form.eighth_query) }}
+                                            {{ wtf.form_field(form.query8) }}
                                         </div>
                                         <div style="width: 20%">
-                                            {{ wtf.form_field(form.eighth_amount) }}
+                                            {{ wtf.form_field(form.amount8) }}
                                         </div>
                                     </div>
                                     <details><summary>add another item</summary>
                                         <div class ="row form-row">
                                             <div style="width: 76%">
-                                                {{ wtf.form_field(form.ninth_query) }}
+                                                {{ wtf.form_field(form.query9) }}
                                             </div>
                                             <div style="width: 20%">
-                                                {{ wtf.form_field(form.ninth_amount) }}
+                                                {{ wtf.form_field(form.amount9) }}
                                             </div>
                                         </div>
                                         <details><summary>add another item</summary>
                                             <div class ="row form-row">
                                                 <div style="width: 76%">
-                                                    {{ wtf.form_field(form.tenth_query) }}
+                                                    {{ wtf.form_field(form.query10) }}
                                                 </div>
                                             <div style="width: 20%">
-                                                    {{ wtf.form_field(form.tenth_amount) }}
+                                                    {{ wtf.form_field(form.amount10) }}
                                             </div>
                                             </div>
                                         </details></details></details></details></details></details></details></details></details>
@@ -138,8 +138,8 @@
         </div>
     </dl>
 </form>
-<form class="forms" id="form-file" action="#" method="post" enctype="multipart/form-data">
-    {{ form.csrf_token }}
+<form class="forms" id="form-file" action="/search_file" method="post" enctype="multipart/form-data">
+    {{ form_file.csrf_token }}
     <div class="col-md-5">
         <h4>Apply filters:</h4>
     <nav>

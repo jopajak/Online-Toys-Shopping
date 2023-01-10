@@ -24,7 +24,7 @@
             {% endfor %}
         {% endfor %}
     {% endif %}
-    <form class = "forms" method="POST" action="#">
+    <form class="forms" method="POST" action="#">
         <dl>
         {{ form.csrf_token }}
         {{wtf.form_field(form.email)}} <br>

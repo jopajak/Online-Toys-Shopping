@@ -52,11 +52,15 @@ def create_app():
     from .views.home import bp as bp_home
     app.register_blueprint(bp_home)
 
+    from .views.search import bp as bp_search
+    app.register_blueprint(bp_search)
+
     from .views.auth import bp as bp_auth
     app.register_blueprint(bp_auth)
 
     from .views.history import bp as bp_history
     app.register_blueprint(bp_history)
+
 
     # for localhost only
     app.run()
