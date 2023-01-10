@@ -6,6 +6,18 @@
     <h1 class='lineUp'>Welcome to CeneoSearch</h1>
 </div>
 
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="container" style="margin-top: 2%">
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
 <div class="choose-form" >
     <div class="col-md-7">
         <h4>Choose type of your shooping list:</h4>

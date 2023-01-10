@@ -1,7 +1,9 @@
-from flask import Blueprint, redirect, url_for, render_template
+from flask import Blueprint, redirect, url_for, render_template, flash
 from flask_login import current_user
 
 from ..forms import SearchForm, SearchFormFile
+
+ALLOWED_EXTENSIONS = {'txt'}
 
 bp = Blueprint('bp_search', __name__)
 
@@ -26,10 +28,19 @@ def search_file_post():
     form_file = SearchFormFile()
     if form_file.validate_on_submit():
         file = form_file.file.data
-        items, quantities = read_items_from_file(file)
-        print(items, quantities)
-        return render_template('search_results.html', user=current_user, queries=items, amounts=quantities, filters=[1])
-    print(form_file.errors)
+
+        if check_file(file):
+            try:
+                items, quantities = read_items_from_file(file)
+            except:     # TODO specify Errors
+                flash("Errors while processing file")
+                return redirect(url_for('bp_home.home_get'))
+
+            return render_template('search_results.html', user=current_user, queries=items, amounts=quantities,
+                                   filters=[1])
+
+        flash("Wrong filetype")
+        return redirect(url_for('bp_home.home_get'))
 
     return redirect(url_for('bp_home.home_get'))
 
@@ -50,9 +61,20 @@ def read_items_from_form(form):
     return items, quantities
 
 
+def allowed_file(file):
+    return '.' in file.filename and \
+           file.filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def check_file(file) -> bool:
+    if file and file.filename and allowed_file(file):
+        return True
+    else:
+        return False
+
+
 def read_items_from_file(file):
     lines = file.read().decode('utf-8').split('\n')
-    print(lines)
     items = []
     quantities = []
 
