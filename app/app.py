@@ -1,10 +1,11 @@
-from flask import Flask, flash, redirect, url_for
+from flask import Flask, flash, redirect, url_for, session
 from werkzeug.debug import DebuggedApplication
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail
 
+from .search_engine import Search
 
 db = SQLAlchemy()
 mail = Mail()
@@ -34,6 +35,11 @@ def create_app():
     def unauthorized():
         flash('Please log in to access this page!')
         return redirect(url_for('bp_auth.login'))
+
+    @app.before_request
+    def create_instance():
+        if 'search_engine' not in session:
+            session['search_engine'] = vars(Search())
 
     db.init_app(app)
     mail.init_app(app)
