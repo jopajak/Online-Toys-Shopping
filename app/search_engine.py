@@ -2,12 +2,12 @@ from .ceneo_scrapper import get_list_of_products
 
 
 class Search:
-    def __init__(self, queries=[], quantities=[], options=[], products_offers=[], products_option=[], is_search_end=False):
+    def __init__(self, queries=[], quantities=[], options=[], products_offers=[], products_offer_selected=[], is_search_end=False):
         self.products_offers = products_offers
         self.options = options
         self.quantities = quantities
         self.queries = queries
-        self.products_offer_selected = products_option
+        self.products_offer_selected = products_offer_selected
 
         self.is_search_end = is_search_end
 
@@ -54,4 +54,4 @@ class Search:
     def from_json(json_dct):
         return Search(json_dct['queries'],
                       json_dct['quantities'], json_dct['options'],
-                      json_dct['products_offers'], json_dct['products_offers'], json_dct['is_search_end'])
+                      json_dct['products_offers'], json_dct['products_offer_selected'], json_dct['is_search_end'])
