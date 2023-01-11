@@ -65,9 +65,8 @@ def waiting_page_get():
 @bp.route('/product/<int:product_id>')
 def choose_product_get(product_id):
     search_engine = Search.from_json(session['search_engine'])
-    print(search_engine.items_offers)
     try:
-        list_of_products = search_engine.get_item_offers(product_id)
+        list_of_products = search_engine.get_product_offers(product_id)
     except ValueError as e:
         flash(str(e))
         # TODO change to flask handling error 404
@@ -79,7 +78,25 @@ def choose_product_get(product_id):
         p.append(product)
     # before each return you must save the state of the object to a session variable
     session['search_engine'] = vars(search_engine)
-    return render_template('search_results.html', user=current_user, products=p)
+    return render_template('product_results.html', user=current_user, products=p, product_id=product_id)
+
+
+@bp.route('/product/<int:product_id>/<int:option>')
+def product_answer_option_get(product_id, option):
+    search_engine = Search.from_json(session['search_engine'])
+    search_engine.set_option(product_id, option)
+    session['search_engine'] = vars(search_engine)
+    return redirect(url_for('bp_search.result_get'))
+
+
+@bp.route('/result')
+def result_get():
+    search_engine = Search.from_json(session['search_engine'])
+    if search_engine.is_option_selected_for_all():
+        result = search_engine.get_offers_by_options()
+        return render_template('search_results.html', user=current_user, products=result)
+
+    return redirect(url_for('bp_search.choose_product_get', product_id=search_engine.get_first_unselected_product_id()))
 
 
 def read_queries_from_form(form_data) -> tuple[list[str], list[int]]:

@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 {%block content%}
 <div class = "text-content">
-    You have selected the following products:
     {% if products %}
         {% for product in products %}
+            <a href="{{ product_id }}/{{ loop.index -1 }}">
                 <div class="container" style="margin-top: 2%">
                     <div class="alert alert-success" role="alert">
                         {{ product }}
                     </div>
                 </div>
+            </a>
         {% endfor %}
     {% endif %}
 </div>
