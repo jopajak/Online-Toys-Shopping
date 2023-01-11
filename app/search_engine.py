@@ -54,4 +54,4 @@ class Search:
     def from_json(json_dct):
         return Search(json_dct['queries'],
                       json_dct['quantities'], json_dct['options'],
-                      json_dct['products_offers'], json_dct['products_option'], json_dct['is_search_end'])
+                      json_dct['products_offers'], json_dct['products_offers'], json_dct['is_search_end'])
