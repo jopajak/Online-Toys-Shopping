@@ -1,5 +1,6 @@
 from flask import Blueprint, redirect, url_for, render_template, flash
 from flask_login import current_user
+from ..search_engine import Search
 
 from ..forms import SearchForm, SearchFormFile
 
@@ -7,18 +8,18 @@ ALLOWED_EXTENSIONS = {'txt'}
 
 bp = Blueprint('bp_search', __name__)
 
+search_engine = Search()
+
 
 @bp.route('/search', methods=['POST'])
 def search_post():
     form = SearchForm()
-    # return form.data
+
     if form.validate_on_submit():
-        queries = form.data
-        queries.pop('submit', None)
-        queries.pop('csrf_token', None)
-        items, quantities = read_items_from_form(queries)
-        return render_template('search_results.html', user=current_user, queries=items, amounts=quantities, filters=[1])
-    print(form.errors)
+        form_data = form.data
+        queries, quantities = read_queries_from_form(form_data)
+        search_engine.search_for_queries(queries, quantities)
+        return redirect(url_for('bp_search.waiting_page_get'))
 
     return redirect(url_for('bp_home.home_get'))
 
@@ -27,16 +28,16 @@ def search_post():
 def search_file_post():
     form_file = SearchFormFile()
     if form_file.validate_on_submit():
-        file = form_file.file.data
+        file_data = form_file.file.data
 
-        if check_file(file):
+        if check_file(file_data):
             try:
-                items, quantities = read_items_from_file(file)
+                queries, quantities = read_queries_from_file(file_data)
             except:     # TODO specify Errors
                 flash("Errors while processing file")
                 return redirect(url_for('bp_home.home_get'))
 
-            return render_template('search_results.html', user=current_user, queries=items, amounts=quantities,
+            return render_template('search_results.html', user=current_user, queries=queries, amounts=quantities,
                                    filters=[1])
 
         flash("Wrong filetype")
@@ -45,46 +46,70 @@ def search_file_post():
     return redirect(url_for('bp_home.home_get'))
 
 
-def read_items_from_form(form):
-    items = []
+@bp.route('/processing')
+def waiting_page_get():
+    if search_engine.is_search_end:
+        return redirect(url_for('bp_search.choose_product_get', product_id=0))
+    return render_template('waiting_page.html')
+
+
+@bp.route('/product/<int:product_id>')
+def choose_product_get(product_id):
+    try:
+        list_of_products = search_engine.get_item_offers(product_id)
+    except ValueError as e:
+        flash(str(e))
+        # TODO change to flask handling error 404
+        return render_template('404.html')
+    p = []
+    for product in list_of_products:
+        p.append(product)
+    return render_template('search_results.html', user=current_user, products=p)
+
+
+def read_queries_from_form(form_data) -> tuple[list[str], list[int]]:
+    queries = []
     quantities = []
 
     for i in range(10):
         query_key = f'query{i + 1}'
         amount_key = f'amount{i + 1}'
-        query = form.get(query_key)
-        amount = form.get(amount_key)
+        query = form_data.get(query_key)
+        quantity = form_data.get(amount_key)
         if query != "":
-            items.append(query)
-            quantities.append(amount)
+            queries.append(query)
+            quantities.append(quantity)
 
-    return items, quantities
+    return queries, quantities
 
 
 def allowed_file(file):
+    # A function that checks if a file is txt
     return '.' in file.filename and \
            file.filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 def check_file(file) -> bool:
+    # A function that checks if a file is txt or empty
     if file and file.filename and allowed_file(file):
         return True
     else:
         return False
 
 
-def read_items_from_file(file):
-    lines = file.read().decode('utf-8').split('\n')
-    items = []
+def read_queries_from_file(file_data) -> tuple[list[str], list[int]]:
+    # Function reads the contents of a text file
+    lines = file_data.read().decode('utf-8').split('\n')
+    queries = []
     quantities = []
 
     for line in lines:
         if line:  # check if the string is non-empty
-            parts = line.split('\t')
-            items.append(parts[0])
+            parts = line.split('\t')    # parts[0] is a query text, parts[1] is number of products in the query
+            queries.append(parts[0])
             if not any(c.isdigit() for c in parts[1]):
                 quantities.append(1)
             else:
                 quantities.append(int(parts[1].rstrip()))
 
-    return items, quantities
+    return queries, quantities
