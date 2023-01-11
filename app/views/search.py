@@ -18,6 +18,7 @@ def search_post():
     if form.validate_on_submit():
         form_data = form.data
         queries, quantities = read_queries_from_form(form_data)
+        # TODO implement the creation of a new thread to search for offers
         search_engine.search_for_queries(queries, quantities)
         return redirect(url_for('bp_search.waiting_page_get'))
 
