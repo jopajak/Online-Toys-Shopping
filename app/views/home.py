@@ -11,5 +11,5 @@ bp = Blueprint('bp_home', __name__)
 def home_get():
     form = SearchForm()
     form_file = SearchFormFile()
-    g.object = Search()
+    g.search_engine = Search()
     return render_template('home.html', form=form, form_file=form_file, user=current_user)

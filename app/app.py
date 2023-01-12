@@ -4,13 +4,15 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail
-import redis
+from flask_redis import FlaskRedis
 import uuid
+import json
 
 from .search_engine import Search
 
 db = SQLAlchemy()
 mail = Mail()
+redis_client = FlaskRedis()
 
 
 def create_app():
@@ -29,7 +31,9 @@ def create_app():
     login_manager.login_view = 'bp_auth.login'
     login_manager.init_app(app)
 
-    r = redis.Redis(host='localhost', port=6379, db=0)
+    db.init_app(app)
+    mail.init_app(app)
+    redis_client.init_app(app)
 
     @login_manager.user_loader
     def load_user(user_id):
@@ -54,11 +58,12 @@ def create_app():
             store_object_in_cache(g.search_engine, key)
 
     def store_object_in_cache(search_engine, key):
-        r.set(key, search_engine)
+        redis_client.set(key, json.dumps(vars(g.search_engine)))
         return key
 
     def retrieve_object_from_cache(key):
-        search_engine = r.get(key)
+        data = json.loads(redis_client.get(key))
+        search_engine = Search.from_json(data)
         return search_engine
 
     def generate_key():
@@ -69,11 +74,8 @@ def create_app():
     def after_request(response):
         key = session.get("key")
         if key:
-            store_object_in_cache(g.my_object, key)
+            store_object_in_cache(g.search_engine, key)
         return response
-
-    db.init_app(app)
-    mail.init_app(app)
 
     from .models import User
 
@@ -97,7 +99,6 @@ def create_app():
 
     from .views.history import bp as bp_history
     app.register_blueprint(bp_history)
-
 
     # for localhost only
     app.run()
