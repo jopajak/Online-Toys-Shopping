@@ -1,9 +1,11 @@
-from flask import Flask, flash, redirect, url_for, session
+from flask import Flask, flash, redirect, url_for, session, g
 from werkzeug.debug import DebuggedApplication
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail
+import redis
+import uuid
 
 from .search_engine import Search
 
@@ -27,6 +29,8 @@ def create_app():
     login_manager.login_view = 'bp_auth.login'
     login_manager.init_app(app)
 
+    r = redis.Redis(host='localhost', port=6379, db=0)
+
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
@@ -37,9 +41,36 @@ def create_app():
         return redirect(url_for('bp_auth.login'))
 
     @app.before_request
-    def create_instance():
+    def before_request():
         if 'search_engine' not in session:
             session['search_engine'] = vars(Search())
+        key = session.get("key")
+        if key:
+            g.search_engine = retrieve_object_from_cache(key)
+        else:
+            g.search_engine = Search()
+            key = generate_key()
+            session["key"] = key
+            store_object_in_cache(g.search_engine, key)
+
+    def store_object_in_cache(search_engine, key):
+        r.set(key, search_engine)
+        return key
+
+    def retrieve_object_from_cache(key):
+        search_engine = r.get(key)
+        return search_engine
+
+    def generate_key():
+        key = uuid.uuid4().hex
+        return key
+
+    @app.after_request
+    def after_request(response):
+        key = session.get("key")
+        if key:
+            store_object_in_cache(g.my_object, key)
+        return response
 
     db.init_app(app)
     mail.init_app(app)

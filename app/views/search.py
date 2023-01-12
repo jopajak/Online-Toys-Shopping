@@ -2,7 +2,7 @@ from flask import Blueprint, redirect, url_for, render_template, flash, session
 from flask_login import current_user
 from ..search_engine import Search
 
-from ..forms import SearchForm, SearchFormFile
+from ..forms import SearchForm, SearchFormFile, ProductSortingForm
 
 ALLOWED_EXTENSIONS = {'txt'}
 
@@ -84,7 +84,7 @@ def choose_product_get(product_id):
 @bp.route('/product/<int:product_id>/<int:option>')
 def product_answer_option_get(product_id, option):
     search_engine = Search.from_json(session['search_engine'])
-    search_engine.set_option(product_id, option)
+    search_engine.set_selected_product(product_id, option)
     session['search_engine'] = vars(search_engine)
     return redirect(url_for('bp_search.result_get'))
 
@@ -93,10 +93,27 @@ def product_answer_option_get(product_id, option):
 def result_get():
     search_engine = Search.from_json(session['search_engine'])
     if search_engine.is_option_selected_for_all():
-        result = search_engine.get_offers_by_options()
-        return render_template('search_results.html', user=current_user, products=result)
+        form = ProductSortingForm()
+        result = search_engine.get_products_by_options()
+        return render_template('search_results.html', user=current_user, products=result, form=form)
 
     return redirect(url_for('bp_search.choose_product_get', product_id=search_engine.get_first_unselected_product_id()))
+
+
+@bp.route('/result', methods=['POST'])
+def result_post():
+    form = ProductSortingForm()
+    if form.validate_on_submit():
+        search_engine = Search.from_json(session['search_engine'])
+        if form.option.data == 'price':
+            search_engine.set_sorting_option('price')
+            products = search_engine.get_products_by_options()
+            offers = search_engine.get_offers_by_option()
+            print(offers)
+            session['search_engine'] = vars(search_engine)
+            return render_template('offers_results.html', user=current_user, products=products, offers=offers, form=form)
+        session['search_engine'] = vars(search_engine)
+    return redirect(url_for('bp_search.result_get'))
 
 
 def read_queries_from_form(form_data) -> tuple[list[str], list[int]]:
@@ -115,7 +132,7 @@ def read_queries_from_form(form_data) -> tuple[list[str], list[int]]:
     return queries, quantities
 
 
-def allowed_file(file):
+def allowed_file(file) -> bool:
     # A function that checks if a file is txt
     return '.' in file.filename and \
            file.filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
