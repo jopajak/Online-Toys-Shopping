@@ -6,7 +6,8 @@
             <a href="{{ product_id }}/{{ loop.index -1 }}">
                 <div class="container" style="margin-top: 2%">
                     <div class="alert alert-success" role="alert">
-                        {{ product }}
+                        <!-- {{ product }} -->
+                        {{ product.get('name') }}
                     </div>
                 </div>
             </a>
