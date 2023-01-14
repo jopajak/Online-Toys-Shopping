@@ -92,6 +92,8 @@ def get_url(product_id):
             print(element.find('a', class_='link js_product-offer-link').get_text().strip('\n').split(' '))
             shop_name = element.find('a', class_='link js_product-offer-link').get_text().rstrip().strip('\n').split(' ')[-1]
             shop_link_txt = details.find('button', class_='button button--primary button--flex add-to-basket-no-popup')
+            if shop_link_txt is None:
+                shop_link_txt = details.find('button', class_='button button--primary button--flex add-to-basket-variant-popup')
             shop_link = '/' + shop_link_txt.get('data-product') + ';' + shop_link_txt.get('data-shop') + '-0v.htm'
             final_price = 0.0
 
