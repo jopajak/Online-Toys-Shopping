@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{%block content%}
+<div class = "text-content">
+
+        <ul class="navbar-nav ml-auto right" style="margin-top: 1%">
+            <li class="dropdown">
+                <button type="button " class="btn btn-form dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="title">Sort by:</span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Vendor</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Price ascending</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Price descending</a></li>
+                </ul>
+            </li>
+        </ul>
+
+
+
+    {% if products %}
+        {% for product in products %}
+            <a href="{{ product_id }}/{{ loop.index -1 }}">
+                <div class="container" style="margin-top: 2%">
+                    <div class="row" style="margin-right: 2%">
+                      <div class="col-md-auto" style="margin-left: 1%">
+                          <div class="alert alert-success" role="alert">Picture</div>
+                      </div>
+                      <div class="col-lg">
+
+                          <div class="alert alert-success" role="alert">
+                              {{ product.get('name') }}
+                          </div>
+                          <div class="alert alert-success" role="alert">
+                              {{ product.get('price') }}zl
+                          </div>
+
+                      </div>
+                  </div>
+                </div>
+            </a>
+        {% endfor %}
+    {% endif %}
+</div>
+{%endblock%}
