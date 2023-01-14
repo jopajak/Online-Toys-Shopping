@@ -14,7 +14,8 @@ mail = Mail()
 def create_app():
     # Create and configure the app
     app = Flask(__name__,
-                instance_relative_config=False
+                instance_relative_config=False,
+                static_url_path='/static'
                 )
     Bootstrap(app)
 
