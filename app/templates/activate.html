@@ -1,43 +1,46 @@
 <style>
     #bg {
-        background: rgba(25, 68, 53,0.88);
+        background: white;
         text-align: center;
         padding: 10px;
     }
 
     p {
         text-align: center;
-        color: white;
+        color: rgb(64, 153, 236);
         font-size: larger;
     }
 
     #titleBox{
-        background:rgb(25, 68, 53);
-        padding: 10px
+        background: rgb(75, 169, 255);
+        color: white;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
     }
 
     button{
         font-size: x-large;
         color:white;
-        background:rgba(25, 68, 53, 0.88);
+        background: rgba(88, 172, 255, 0.99);
         border-style: hidden;
         border-radius: 25px;
         width: 200px;
         height: 75px;
     }
 
-    a:hover {
-        filter: brightness(85%);
+    button:hover {
+        background: rgba(88, 172, 255, 0.7);
     }
 </style>
 
 {%block content%}
 <div id="titleBox">
-    <p>Ceneo Search</p>
+    <h2>ZabawkoweOkazje</h2>
 </div>
 
 <div id="bg">
-    <h1 style="color:rgb(70, 68, 53)">Welcome!</h1>
+    <h1 style="color: rgb(38,123,204);">Welcome!</h1>
     <p>Thanks for signing up. Please click button below to activate your account:</p>
     <a href="{{ confirm_url }}">
         <button>Verify</button>

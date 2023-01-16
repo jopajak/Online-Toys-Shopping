@@ -11,4 +11,4 @@ bp = Blueprint('bp_history', __name__)
 @login_required
 @check_confirmed
 def history_get():
-    return render_template('history.html')
+    return render_template('history.html',  user=current_user)

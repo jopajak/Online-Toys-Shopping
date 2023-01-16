@@ -8,7 +8,7 @@ details{
 }
 
 .navbar-custom {
-            background-color: rgb(25, 68, 53);
+            background-color: rgb(75, 169, 255);
             color: white;
         }
         .nav-title{
@@ -16,7 +16,7 @@ details{
             color: white;
         }
         .site-background{
-            background-color: rgba(25, 68, 53,0.88);
+            background-color: rgba(255, 255, 255);
         }
         .empty-site-background{
             display: grid;
@@ -24,6 +24,7 @@ details{
             text-align: center;
             margin-top: 20px;
             margin-bottom: 40px;
+            color: rgb(64, 153, 236);
         }
 
         .forms{
@@ -33,27 +34,27 @@ details{
             align-items:center;
             margin-top: 20px;
             margin-bottom: 20px;
-            color: white;
+            color: rgb(88, 172, 255);
         }
 
 
 
         .filters{
-            background-color: rgba(25, 68, 53,0.88);
+            background-color: rgba(88, 172, 255,0.88);
             color:white;
+            border: 2px solid rgba(88, 172, 255);
         }
 
         .filters:hover{
-            background-color: rgba(25, 68, 53, 0.6);
+            background-color: rgba(88, 172, 255, 0.6);
             color: white;
-            border: rgba(25, 68, 53, 0.8);
+            border: 1px solid rgba(88, 172, 255,0.8);
         }
-
 
         .tab-content {
             padding: 15px;
-            background-color: rgba(25, 68, 53, 0.6);
-            border-color: rgba(25, 68, 53, 0.6);
+            background-color: rgba(88, 172, 255, 0.6);
+            border: 2px solid rgba(88, 172, 255);
             margin-bottom: 5%;
         }
 
@@ -75,36 +76,39 @@ details{
 
         .btn-login {
             margin-left: auto;
-            background-color: rgba(25, 68, 53, 0.99) !important;
+            background-color: rgba(88, 172, 255, 0.99) !important;
             color: white;
             margin-bottom: 20px;
-            border: rgba(25, 68, 53, 0.99) !important;
+            border: rgba(88, 172, 255, 0.99) !important;
+    }
 
-    }
         .btn-login:hover {
-            background-color: rgba(25, 68, 53, 0.6) !important;
+            background-color: rgba(88, 172, 255, 0.6) !important;
             color: white;
-            border: rgba(25, 68, 53, 0.8) !important;
+            border: rgba(88, 172, 255, 0.8) !important;
     }
+
         .btn-form {
-            background-color: rgba(25, 68, 53, 0.99) !important;
+            background-color: rgba(88, 172, 255, 0.99) !important;
             color: white;
             margin-bottom: 20px;
-            border: rgba(25, 68, 53, 0.99) !important;
+            border: rgba(88, 172, 255, 0.99) !important;
             width: 49%;
         }
 
         .btn-form:hover {
-            background-color: rgba(25, 68, 53, 0.6) !important;
+            background-color: rgba(88, 172, 255, 0.6) !important;
             color: white;
-            border: rgba(25, 68, 53, 0.8) !important;
+            border: rgba(88, 172, 255, 0.8) !important;
     }
+
         .choose-form {
             display:flex;
             justify-content: center;
             margin-bottom: 3%;
-            color:white;
+            color: rgb(88, 172, 255);
     }
+
         #form-file{
             display:none;
         }
@@ -112,12 +116,12 @@ details{
             text-align: center;
         }
 
-        .login-link{
-             color: rgb(19, 47, 37);
+        .login-link, .link{
+             color: rgb(27, 122, 197);
         }
 
-        .login-link:hover{
-             color: rgb(19, 47, 37);
+        .login-link:hover, .link:hover{
+             color: rgb(27, 122, 197);
         }
 
         .danger-link{
@@ -133,7 +137,8 @@ details{
         }
 
          .navbar-nav > li > .dropdown-menu {
-             background-color: rgb(25, 68, 53);
+             background-color: rgb(75, 169, 255);
+             border:none;
          }
 
          .dropdown-item {
@@ -152,7 +157,7 @@ details{
             margin-bottom: 40px;
     }
          .lineUp {
-             font-size: 70px ;
+            font-size: 9vh;
             animation: 3s anim-lineUp ease-out ;
          }
             @keyframes anim-lineUp {
@@ -173,12 +178,140 @@ details{
             }
 }
 
+            .welcome-container{
+                position: absolute;
+                display: flex;
+                border-radius: 150px;
+                background: rgba(88, 172, 255, 0.99);
+                margin-top: 25vh;
+                width: 100%;
+                height: 45vh;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .welcome-images{
+                position: absolute;
+                z-index: 9;
+            }
+
+            .down-img{
+                display: flex;
+                justify-content: space-between;
+                margin-top: 15vh;
+            }
+
+            .up-img{
+                display: flex;
+                justify-content: space-between;
+                margin-top: 20vh;
+            }
+
+            .wrapper{
+                position: relative;
+                height: 92vh;
+                display: flex;
+                justify-content: center;
+            }
+
+
+            @keyframes anim-move {
+                0% {
+                    transform: translateX(0%);
+                }
+                100% {
+                    transform: translateX(950%);
+                }
+            }
+
+            @keyframes jump {
+                 0%  {
+                     transform: scale(1,1)
+                     translateY(0);
+                 }
+                10%  {
+                    transform: scale(1.1,.9)
+                    translateY(0);
+                }
+                30%  {
+                    transform: scale(.9,1.1)
+                    translateY(-70px);
+                }
+                50%  {
+                    transform: scale(1.05,.95)
+                    translateY(0);
+                }
+                57%  {
+                    transform: scale(1,1)
+                    translateY(-7px);
+                }
+                64%  {
+                    transform: scale(1,1)
+                    translateY(0);
+                }
+                100% {
+                    transform: scale(1,1)
+                    translateY(0);
+                }
+            }
+
+            @keyframes rattle {
+                0%{
+                    transform: rotate(-15deg);
+                }
+                35%{
+                    transform: rotate(30deg);
+                }
+
+                70%{
+                   transform: rotate(-50deg);
+                }
+
+                100%{
+                    transform: rotate(-15deg);
+                }
+            }
+
+             @keyframes fly-out {
+                 50%{
+                     transform: translate3d(-150%,-250%, 0);
+                 }
+                 50.1%{
+                     transform: translate3d(300%,-250%, 0);
+                 }
+
+                 50.2%{
+                     transform: translate3d(300%,300%, 0);
+                 }
+                 100%{
+                     transform: translate3d(0,0, 0);
+                 }
+             }
+
+
+            img{
+                max-width: 80%;
+                max-height: 80%;
+                display: block;
+            }
+
+            .bear-img{
+                display: flex;
+                justify-content: end;
+            }
+
+            hr.rounded {
+                border-top: 2px solid rgba(88, 172, 255, 0.99);
+                border-radius: 2px;
+                margin: 5%;
+            }
         #main-footer{
-            background-color: rgb(25, 68, 53);
+            background-color: rgb(68, 136, 203);
             bottom:0;
             margin-top:auto;
             width: 100%;
     }
+
         #content{
             margin-bottom:auto;
         }

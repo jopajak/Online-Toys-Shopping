@@ -79,7 +79,7 @@ def logout_get():
 def unconfirmed():
     if current_user.confirmed:
         return redirect(url_for('bp_auth.login'))
-    return render_template('unconfirmed.html')
+    return render_template('unconfirmed.html', user=current_user)
 
 
 @bp.route('/confirm/<token>')

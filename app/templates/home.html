@@ -2,10 +2,34 @@
 {%import "bootstrap/wtf.html" as wtf %}
 {%block content%}
 <div>
-<div class="line">
-    <h1 class='lineUp'>Welcome to CeneoSearch</h1>
-</div>
+    <div class="wrapper" >
+    <div class="container welcome-container">
+        <div class="line">
+            <h1 class='lineUp'><b>Welcome to ZabawkoweOkazje</b></h1>
+        </div>
+    </div>
+    <div class="container welcome-images">
+        <div class="up-img">
+            <div class="col-md-10">
+                <img src="/static/images/rattle.png" height="150" width="130" style="transform:rotate(-15deg);" id="rattle">
+            </div>
+            <div class="col-md-2 bear-img" id="kite">
+                <img src="/static/images/kite.png" height="150" width="130">
+            </div>
+        </div>
+        <div class="down-img">
+            <div class="col-md-10 train">
+                <img src="/static/images/toy-train.png" height="110" width="110" id="train">
+            </div>
+            <div class="col-md-2 bear-img" id="doll">
+                <img src="/static/images/doll.png" height="150" width="150">
+            </div>
+        </div>
+    </div>
+    </div>
 
+
+<hr class="rounded">
 {% with messages = get_flashed_messages() %}
     {% if messages %}
         {% for message in messages %}
@@ -25,7 +49,7 @@
         <button id="button2" type="button" class="btn btn-lg btn-form">Add via file</button>
     </div>
 </div>
-<form class="forms" id="form-list" action="/search" method="post">
+<form class="forms" id="form-list" action="/search" method="post" >
     {{ form.csrf_token }}
     <div class="col-md-5">
         <h4>Apply filters:</h4>
@@ -194,6 +218,10 @@
         const button2 = document.getElementById("button2");
         const form1 = document.getElementById("form-list");
         const form2 = document.getElementById("form-file");
+        const train = document.getElementById("train");
+        const doll = document.getElementById("doll");
+        const rattle = document.getElementById("rattle");
+        const kite = document.getElementById("kite");
 
         button1.addEventListener("click", function() {
             form1.style.display = "flex";
@@ -204,5 +232,54 @@
             form1.style.display = "none";
             form2.style.display = "flex";
         });
+
+        function train_animation(){
+            train.style.animation = '3s anim-move';
+            setTimeout(() => {  train.style.animation -= '3s anim-move';}, 3000);
+        }
+
+        function doll_animation() {
+            doll.style.animation = '1.5s jump linear alternate';
+            setTimeout(() => {  doll.style.animation -= '1.5s jump linear alternate';}, 1500);
+        }
+
+        function rattle_animation() {
+            rattle.style.animation = '2s rattle';
+            setTimeout(() => {  rattle.style.animation -= '2s rattle';}, 2000);
+        }
+
+        function kite_animation() {
+            kite.style.animation = '3s fly-out';
+            setTimeout(() => {  kite.style.animation -= '3s fly-out';}, 3000);
+        }
+
+        function random_onload() {
+            let random = Math.floor(Math.random() * 4);
+            console.log(random);
+
+            setTimeout(() => {
+                switch (random) {
+                    case 0:
+                        train_animation();
+                        break;
+                    case 1:
+                        doll_animation();
+                        break;
+                    case 2:
+                        rattle_animation();
+                        break;
+                    case 3:
+                        kite_animation();
+                        break;
+            }}, 1500);
+        }
+
+        train.addEventListener("click", train_animation);
+        doll.addEventListener("click", doll_animation);
+        rattle.addEventListener("click", rattle_animation);
+        kite.addEventListener("click", kite_animation);
+
+        random_onload();
+
     </script>
 {% endblock %}
