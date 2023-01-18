@@ -337,6 +337,10 @@ details{
                 margin: 5%;
             }
 
+            hr{
+                border-top: 1px solid white;
+            }
+
             .product-container{
 
             }
@@ -346,6 +350,13 @@ details{
             margin-top:auto;
             width: 100%;
     }
+        .footer-link{
+            color: white;
+        }
+
+        .footer-link:hover{
+            color: white;
+        }
 
         #content{
             margin-bottom:auto;
