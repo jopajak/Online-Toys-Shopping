@@ -19,10 +19,8 @@ def search_post():
         queries, quantities = read_queries_from_form(form_data)
         # TODO implement the creation of a new thread to search for offers
         search_engine.search_for_queries(queries, quantities)
-        # before each return you must save the state of the object to a session variable
         return redirect(url_for('bp_search.waiting_page_get'))
 
-    # before each return you must save the state of the object to a session variable
     return redirect(url_for('bp_home.home_get'))
 
 
@@ -57,20 +55,19 @@ def waiting_page_get():
     return render_template('waiting_page.html')
 
 
+# TODO what if no product has been found
 @bp.route('/product/<int:product_id>')
 def choose_product_get(product_id):
     search_engine = g.search_engine
     try:
-        list_of_products = search_engine.get_product_offers(product_id)
+        list_of_products = search_engine.get_product_suggestions(product_id)
     except ValueError as e:
         flash(str(e))
         # TODO change to flask handling error 404
-        # before each return you must save the state of the object to a session variable
         return render_template('404.html')
     p = []
     for product in list_of_products:
         p.append(product)
-    # before each return you must save the state of the object to a session variable
     return render_template('product_results.html', user=current_user, products=p, product_id=product_id)
 
 
@@ -92,6 +89,7 @@ def result_get():
     return redirect(url_for('bp_search.choose_product_get', product_id=search_engine.get_first_unselected_product_id()))
 
 
+# TODO block result if choosing proces is not ended
 @bp.route('/result', methods=['POST'])
 def result_post():
     form = ProductSortingForm()
@@ -100,10 +98,15 @@ def result_post():
         if form.option.data == 'price':
             search_engine.set_sorting_option('price')
             products = search_engine.get_products_by_options()
-            offers = search_engine.get_offers_by_option()
-            print(offers)
-            return render_template('offers_results.html',
+            offers = search_engine.get_offers_by_price()
+            return render_template('offers_results_price.html',
                                    user=current_user, products=products, offers=offers, form=form)
+        if form.option.data == 'shops':
+            search_engine.set_sorting_option('shops')
+            products = search_engine.get_products_by_options()
+            shops_offers = search_engine.get_offers_by_shops()
+            return render_template('offers_results_shops.html',
+                                   user=current_user, shops_offers=shops_offers, form=form)
     return redirect(url_for('bp_search.result_get'))
 
 

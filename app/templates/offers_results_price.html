@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{%block content%}
+<div class = "text-content">
+    The best offers we've found for you:
+    {% if products %}
+        {% for product in products %}
+                <div class="container" style="margin-top: 2%">
+                    <div class="alert alert-success" role="alert">
+                        {{ product }}
+                        {% if offers %}
+                            <div class="container" style="margin-top: 2%">
+                                {{ offers[loop.index - 1][0] }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+        {% endfor %}
+    {% endif %}
+</div>
+{%endblock%}

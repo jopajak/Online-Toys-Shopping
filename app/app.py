@@ -50,7 +50,13 @@ def create_app():
             session['search_engine'] = vars(Search())
         key = session.get("key")
         if key:
-            g.search_engine = retrieve_object_from_cache(key)
+            try:
+                g.search_engine = retrieve_object_from_cache(key)
+            except KeyError:
+                g.search_engine = Search()
+                key = generate_key()
+                session["key"] = key
+                store_object_in_cache(g.search_engine, key)
         else:
             g.search_engine = Search()
             key = generate_key()

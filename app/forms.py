@@ -56,7 +56,7 @@ class SearchFormFile(FlaskForm):
 
 
 class ProductSortingForm(FlaskForm):
-    option = RadioField('Sort by:', choices=[('price', 'Price'), ('stores', 'Number of stores')], default='price')
+    option = RadioField('Sort by:', choices=[('price', 'Price'), ('shops', 'Number of shops')], default='price')
     submit = SubmitField('Search', id='submitButton')
 
 

@@ -2,16 +2,16 @@
 {%block content%}
 <div class = "text-content">
     The best offers we've found for you:
-    {% if products %}
-        {% for product in products %}
+    {% if shops_offers %}
+        {% for shop in shops_offers.keys() %}
                 <div class="container" style="margin-top: 2%">
                     <div class="alert alert-success" role="alert">
-                        {{ product }}
-                        {% if offers %}
+                        Store: {{ shop }}
+                        {% for offer in shops_offers[shop] %}
                             <div class="container" style="margin-top: 2%">
-                                {{ offers[loop.index - 1] }}
+                                {{ offer }}
                             </div>
-                        {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
         {% endfor %}
