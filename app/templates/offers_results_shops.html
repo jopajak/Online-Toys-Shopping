@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{%block content%}
+<div class = "text-content">
+    The best offers we've found for you:
+    {% if shops_offers %}
+        {% for shop in shops_offers.keys() %}
+                <div class="container" style="margin-top: 2%">
+                    <div class="alert alert-success" role="alert">
+                        Store: {{ shop }}
+                        {% for offer in shops_offers[shop] %}
+                            <div class="container" style="margin-top: 2%">
+                                {{ offer }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+        {% endfor %}
+    {% endif %}
+</div>
+{%endblock%}

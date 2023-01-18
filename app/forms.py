@@ -55,6 +55,11 @@ class SearchFormFile(FlaskForm):
     submit = SubmitField('Search', id='searchButton')
 
 
+class ProductSortingForm(FlaskForm):
+    option = RadioField('Sort by:', choices=[('price', 'Price'), ('shops', 'Number of shops')], default='price')
+    submit = SubmitField('Search', id='submitButton')
+
+
 class RegistrationForm(FlaskForm):
     email = StringField('E-mail', validators=[InputRequired(message='E-mail field is required.')], id='inputEmail')
     password = PasswordField('Password', validators=[InputRequired(message='Password field is required.')],

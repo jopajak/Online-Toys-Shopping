@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
+{%import "bootstrap/wtf.html" as wtf %}
 {%block content%}
 <div class = "text-content">
+    <form class="forms" id="form-list" action="/result" method="post">
+        {{ form.csrf_token }}
+        <p>{{ form.option.label }}</p>
+        {{ wtf.form_field(form.option) }}
+        {{ wtf.form_field(form.submit) }}
+    </form>
     <h2>You have selected the following products:</h2>
     {% if products %}
         {% for product in products %}
