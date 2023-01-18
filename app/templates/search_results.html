@@ -1,26 +1,25 @@
 {% extends 'base.html' %}
 {%block content%}
 <div class = "text-content">
-    You have selected the following products:
+    <h2>You have selected the following products:</h2>
     {% if products %}
         {% for product in products %}
-                <div class="container-fluid" style="margin-top: 2%">
+             <div class="container shadow p-3 mb-5 bg-white rounded product-container" style="margin-top: 2%;">
                   <div class="row" style="margin-right: 2%">
-                      <div class="col-md-auto" style="margin-left: 2%">
-                          <div class="alert alert-success" role="alert">Obrazek</div>
+                      <div class="col-md-3" style="margin-left: 2%; margin-top: 2%">
+                          <a href="http://{{product.get('img_link')}}"><img src="http://{{product.get('img_link')}}"></a>
                       </div>
-                      <div class="col-lg">
-
-                          <div class="alert alert-success" role="alert">
-                              {{ product.get('name') }}
+                      <div class="col-lg prod-content-container container">
+                          <div class="row product-title">
+                              <h3><b>{{ product.get('name') }}</b> </h3>
+                              <h5><b>Price: {{ product.get('price') }}zł</b></h5>
                           </div>
-                          <div class="alert alert-success" role="alert">
-                              price: {{ product.get('price') }}  product_id: {{ product.get('product_id') }}
+                          <div class="row product-buttons">
+                              <a href="https://ceneo.pl/{{ product.get('product_id')}}"><button class="btn btn-lg btn-product">See offer on Ceneo</button></a>
                           </div>
-
                       </div>
                   </div>
-                </div>
+             </div>
         {% endfor %}
     {% endif %}
 </div>

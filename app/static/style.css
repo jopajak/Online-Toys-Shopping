@@ -32,7 +32,6 @@ details{
             justify-content: center;
             flex-direction: column;
             align-items:center;
-            margin-top: 20px;
             margin-bottom: 20px;
             color: rgb(88, 172, 255);
         }
@@ -69,8 +68,27 @@ details{
         }
 
         .text-content{
-            color: white;
+            color: rgb(88, 172, 255);
             text-align: center;
+        }
+
+        .prod-content-container{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 35vh;
+        }
+
+        .product-title{
+            display:flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .product-buttons{
+            display: flex;
+            justify-content: flex-end;
+            gap: 1vw;
         }
 
 
@@ -81,8 +99,22 @@ details{
             margin-bottom: 20px;
             border: rgba(88, 172, 255, 0.99) !important;
     }
+        .btn-product {
+            margin-left: auto;
+            background-color: rgba(88, 172, 255, 0.99) !important;
+            color: white;
+            border: rgba(88, 172, 255, 0.99) !important;
+    }
+
+        .btn-product:hover {
+            margin-left: auto;
+            background-color: rgba(88, 172, 255, 0.6) !important;
+            color: white;
+            border: rgba(88, 172, 255, 0.8) !important;
+    }
 
         .btn-login:hover {
+            margin-left: auto;
             background-color: rgba(88, 172, 255, 0.6) !important;
             color: white;
             border: rgba(88, 172, 255, 0.8) !important;
@@ -183,7 +215,7 @@ details{
                 display: flex;
                 border-radius: 150px;
                 background: rgba(88, 172, 255, 0.99);
-                margin-top: 25vh;
+                margin-top: 20vh;
                 width: 100%;
                 height: 45vh;
                 justify-content: center;
@@ -204,7 +236,7 @@ details{
             .up-img{
                 display: flex;
                 justify-content: space-between;
-                margin-top: 20vh;
+                margin-top: 15vh;
             }
 
             .wrapper{
@@ -292,7 +324,6 @@ details{
             img{
                 max-width: 80%;
                 max-height: 80%;
-                display: block;
             }
 
             .bear-img{
@@ -305,6 +336,10 @@ details{
                 border-radius: 2px;
                 margin: 5%;
             }
+
+            .product-container{
+
+            }
         #main-footer{
             background-color: rgb(68, 136, 203);
             bottom:0;
@@ -314,4 +349,5 @@ details{
 
         #content{
             margin-bottom:auto;
+            margin-top: 2%;
         }

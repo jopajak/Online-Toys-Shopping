@@ -4,7 +4,6 @@
 <title>Login</title>
 {%endblock%}
 {%block content%}
-<body>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for message in messages %}
@@ -37,5 +36,4 @@
         </div>
         </dl>
     </form>
-</body>
 {%endblock%}

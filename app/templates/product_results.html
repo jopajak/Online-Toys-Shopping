@@ -21,25 +21,23 @@
 
     {% if products %}
         {% for product in products %}
-            <a href="{{ product_id }}/{{ loop.index -1 }}">
-                <div class="container" style="margin-top: 2%">
-                    <div class="row" style="margin-right: 2%">
-                      <div class="col-md-auto" style="margin-left: 1%">
-                          <div class="alert alert-success" role="alert">Picture</div>
+                <div class="container shadow p-3 mb-5 bg-white rounded product-container" style="margin-top: 2%;">
+                  <div class="row" style="margin-right: 2%">
+                      <div class="col-md-3" style="margin-left: 2%; margin-top: 2%">
+                          <a href="http://{{product.get('img_link')}}"><img src="http://{{product.get('img_link')}}"></a>
                       </div>
-                      <div class="col-lg">
-
-                          <div class="alert alert-success" role="alert">
-                              {{ product.get('name') }}
+                      <div class="col-lg prod-content-container container">
+                          <div class="row product-title">
+                              <h3><b>{{ product.get('name') }}</b> </h3>
+                              <h5><b>Price: {{ product.get('price') }}zł</b></h5>
                           </div>
-                          <div class="alert alert-success" role="alert">
-                              {{ product.get('price') }}zl
+                          <div class="row product-buttons">
+                              <a href="{{ product_id }}/{{ loop.index -1 }}"><button class="btn btn-lg btn-product">Choose this product</button></a>
+                              <a href="https://ceneo.pl/{{ product.get('product_id')}}"><button class="btn btn-lg btn-product">See offer on Ceneo</button></a>
                           </div>
-
                       </div>
                   </div>
-                </div>
-            </a>
+             </div>
         {% endfor %}
     {% endif %}
 </div>
