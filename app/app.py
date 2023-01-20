@@ -9,8 +9,8 @@ import uuid
 import json
 
 from .search_engine import Search
+from .database import db
 
-db = SQLAlchemy()
 mail = Mail()
 redis_client = FlaskRedis()
 

@@ -1,6 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 
+from .database import db
+from .models import SearchInfo
+from flask_login import current_user
+
 
 class Product:
     def __init__(self, product_id="", name="", price=0.0, img_link=""):
@@ -18,6 +22,8 @@ class Offer:
 
 
 def get_list_of_products(search_text, get_lowest_price, min_price=None, max_price=None) -> list:
+    db.session.add(SearchInfo(search_text, current_user.id))
+    db.session.commit()
     if get_lowest_price:
         url_link = 'https://www.ceneo.pl/szukaj-' + search_text + ';0112-0.htm'  # filtr od najmniejszej ceny
     else:
