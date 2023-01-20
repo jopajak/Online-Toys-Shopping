@@ -56,20 +56,12 @@
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <a class="nav-item nav-link active filters" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"  aria-selected="true">Platform to search</a>
-            <a class="nav-item nav-link filters" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"  aria-selected="false">Price</a>
         </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
             <p>Search in:</p>
             {{ wtf.form_field(form.platform) }}
-        </div>
-        <div class="tab-pane fade " id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" >
-            {{ wtf.form_field(form.price_min) }}
-            {{ wtf.form_field(form.price_max) }}
-        </div>
-        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-            {{ wtf.form_field(form.stores_max) }}
         </div>
     </div>
     </div>
@@ -180,21 +172,12 @@
     <nav>
         <div class="nav nav-tabs" id="nav-tab-file" role="tablist">
             <a class="nav-item nav-link active filters" id="nav-home-tab-file" data-toggle="tab" href="#nav-home-file" role="tab"  aria-selected="true">Platform to search</a>
-            <a class="nav-item nav-link filters" id="nav-profile-tab-file" data-toggle="tab" href="#nav-profile-file" role="tab"  aria-selected="false">Price</a>
-            <a class="nav-item nav-link filters" id="nav-contact-tab-file" data-toggle="tab" href="#nav-contact-file" role="tab" aria-selected="false">Stores</a>
         </div>
     </nav>
     <div class="tab-content" id="nav-tabContent-file">
         <div class="tab-pane fade show active" id="nav-home-file" role="tabpanel" aria-labelledby="nav-home-tab">
             <p>Search in:</p>
             {{ wtf.form_field(form_file.platform) }}
-        </div>
-        <div class="tab-pane fade " id="nav-profile-file" role="tabpanel" aria-labelledby="nav-profile-tab" >
-            {{ wtf.form_field(form_file.price_min) }}
-            {{ wtf.form_field(form_file.price_max) }}
-        </div>
-        <div class="tab-pane fade" id="nav-contact-file" role="tabpanel" aria-labelledby="nav-contact-tab">
-            {{ wtf.form_field(form_file.stores_max) }}
         </div>
     </div>
     </div>
