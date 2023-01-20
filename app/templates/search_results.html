@@ -2,13 +2,24 @@
 {%import "bootstrap/wtf.html" as wtf %}
 {%block content%}
 <div class = "text-content">
-    <form class="forms" id="form-list" action="/result" method="post">
-        {{ form.csrf_token }}
-        <p>{{ form.option.label }}</p>
-        {{ wtf.form_field(form.option) }}
-        {{ wtf.form_field(form.submit) }}
-    </form>
+    <div class="btn-product-nav btn-back">
+        <a href="/product/{{product_length-1}}" ><button class="btn btn-lg btn-product"> <i class="fa-solid fa-left-long"></i> Go back </button></a>
+    </div>
     <h2>You have selected the following products:</h2>
+    <form class="forms" id="form-list" action="/result" method="post">
+        <div class="container sort">
+            <h4>Select sorting option</h4>
+            <div class="row row-sort">
+            <div class="col-md-11 col-sort">
+                {{ form.csrf_token }}
+                {{ wtf.form_field(form.option) }}
+            </div>
+            </div>
+            <div class="row product-buttons sort-buttons">
+                <button class="btn btn-product-pink btn-sort" type="submit">Sort</button>
+         </div>
+        </div>
+    </form>
     {% if products %}
         {% for product in products %}
              <div class="container shadow p-3 mb-5 bg-white rounded product-container" style="margin-top: 2%;">
@@ -19,7 +30,8 @@
                       <div class="col-lg prod-content-container container">
                           <div class="row product-title">
                               <h3><b>{{ product.get('name') }}</b> </h3>
-                              <h5><b>Price: {{ product.get('price') }}zł</b></h5>
+                              <hr class="rounded-title">
+                              <h4><b>Price: {{ product.get('price') }}zł</b></h4>
                           </div>
                           <div class="row product-buttons">
                               <a href="https://ceneo.pl/{{ product.get('product_id')}}"><button class="btn btn-lg btn-product">See offer on Ceneo</button></a>

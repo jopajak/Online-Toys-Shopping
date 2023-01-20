@@ -123,6 +123,9 @@ class Search:
 
         return best_shop_offer
 
+    def get_queries_length(self) -> int:
+        return len(self.queries)
+
     @staticmethod
     def from_json(json_dct):
         return Search(json_dct['queries'],
