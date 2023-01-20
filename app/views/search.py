@@ -94,9 +94,10 @@ def result_get():
     return redirect(url_for('bp_search.choose_product_get', product_id=g.search_engine.get_first_unselected_product_id()))
 
 
-# TODO block result if choosing proces is not ended
 @bp.route('/result', methods=['POST'])
 def result_post():
+    if not g.search_engine.is_products_search_end:
+        return render_template('404.html'), 404
     form = ProductSortingForm()
     if form.validate_on_submit():
         search_engine = g.search_engine
