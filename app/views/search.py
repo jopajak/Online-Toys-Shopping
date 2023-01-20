@@ -12,13 +12,13 @@ bp = Blueprint('bp_search', __name__)
 @bp.route('/search', methods=['POST'])
 def search_post():
     form = SearchForm()
+    g.search_engine = Search()
     search_engine = g.search_engine
-
     if form.validate_on_submit():
         form_data = form.data
         queries, quantities = read_queries_from_form(form_data)
         # TODO implement the creation of a new thread to search for offers
-        search_engine.search_for_queries(queries, quantities)
+        g.search_engine.search_for_queries(queries, quantities)
         return redirect(url_for('bp_search.waiting_page_get'))
 
     return redirect(url_for('bp_home.home_get'))
@@ -27,6 +27,7 @@ def search_post():
 @bp.route('/search_file', methods=['POST'])
 def search_file_post():
     form_file = SearchFormFile()
+    g.search_engine = Search()
     search_engine = g.search_engine
     if form_file.validate_on_submit():
         file_data = form_file.file.data
@@ -38,7 +39,7 @@ def search_file_post():
                 flash("Errors while processing file")
                 return redirect(url_for('bp_home.home_get'))
 
-            search_engine.search_for_queries(queries, quantities)
+            g.search_engine.search_for_queries(queries, quantities)
             return redirect(url_for('bp_search.waiting_page_get'))
 
         flash("Wrong filetype")
@@ -50,7 +51,9 @@ def search_file_post():
 @bp.route('/processing')
 def waiting_page_get():
     search_engine = g.search_engine
-    if search_engine.is_search_end:
+    if g.search_engine.is_products_search_end:
+        if g.search_engine.is_offers_search_end:
+            return redirect(url_for('bp_search.offers_result_get'))
         return redirect(url_for('bp_search.choose_product_get', product_id=0))
     return render_template('waiting_page.html')
 
@@ -58,13 +61,10 @@ def waiting_page_get():
 # TODO what if no product has been found
 @bp.route('/product/<int:product_id>')
 def choose_product_get(product_id):
-    search_engine = g.search_engine
     try:
-        list_of_products = search_engine.get_product_suggestions(product_id)
-    except ValueError as e:
-        flash(str(e))
-        # TODO change to flask handling error 404
-        return render_template('404.html')
+        list_of_products = g.search_engine.get_product_suggestions(product_id)
+    except ValueError:
+        return render_template('404.html'), 404
     p = []
     for product in list_of_products:
         p.append(product)
@@ -73,20 +73,25 @@ def choose_product_get(product_id):
 
 @bp.route('/product/<int:product_id>/<int:option>')
 def product_answer_option_get(product_id, option):
-    search_engine = g.search_engine
-    search_engine.set_selected_product(product_id, option)
+    try:
+        g.search_engine.set_selected_product(product_id, option)
+    except ValueError:
+        return render_template('404.html'), 404
+    except IndexError:
+        return render_template('404.html'), 404
     return redirect(url_for('bp_search.result_get'))
 
 
 @bp.route('/result')
 def result_get():
-    search_engine = g.search_engine
-    if search_engine.is_option_selected_for_all():
+    if not g.search_engine.is_products_search_end:
+        return render_template('404.html'), 404
+    if g.search_engine.is_option_selected_for_all():
         form = ProductSortingForm()
-        result = search_engine.get_products_by_options()
+        result = g.search_engine.get_products_by_options()
         return render_template('search_results.html', user=current_user, products=result, form=form)
 
-    return redirect(url_for('bp_search.choose_product_get', product_id=search_engine.get_first_unselected_product_id()))
+    return redirect(url_for('bp_search.choose_product_get', product_id=g.search_engine.get_first_unselected_product_id()))
 
 
 # TODO block result if choosing proces is not ended
@@ -96,18 +101,33 @@ def result_post():
     if form.validate_on_submit():
         search_engine = g.search_engine
         if form.option.data == 'price':
-            search_engine.set_sorting_option('price')
-            products = search_engine.get_products_by_options()
-            offers = search_engine.get_offers_by_price()
-            return render_template('offers_results_price.html',
-                                   user=current_user, products=products, offers=offers, form=form)
+            g.search_engine.set_sorting_option('price')
         if form.option.data == 'shops':
-            search_engine.set_sorting_option('shops')
-            products = search_engine.get_products_by_options()
-            shops_offers = search_engine.get_offers_by_shops()
-            return render_template('offers_results_shops.html',
-                                   user=current_user, shops_offers=shops_offers, form=form)
+            g.search_engine.set_sorting_option('shops')
+
+        g.search_engine.search_for_offers()
+        return redirect(url_for('bp_search.waiting_page_get'))
     return redirect(url_for('bp_search.result_get'))
+
+
+@bp.route('/offers_result')
+def offers_result_get():
+    search_engine = g.search_engine
+
+    if not g.search_engine.is_offers_search_end:
+        return render_template('404.html'), 404
+
+    if g.search_engine.get_sorting_option() == 'price':
+        products = g.search_engine.get_products_by_options()
+        offers = g.search_engine.get_offers_by_price()
+        return render_template('offers_results_price.html',
+                               user=current_user, products=products, offers=offers)
+
+    if g.search_engine.get_sorting_option() == 'shops':
+        shops_offers = g.search_engine.get_offers_by_shops()
+        return render_template('offers_results_shops.html',
+                               user=current_user, shops_offers=shops_offers)
+    return render_template('404.html'), 404
 
 
 def read_queries_from_form(form_data) -> tuple[list[str], list[int]]:

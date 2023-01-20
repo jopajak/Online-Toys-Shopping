@@ -1,26 +1,17 @@
-from .ceneo_scrapper import get_list_of_products, search_item_offers
+from .ceneo_scrapper import get_list_of_products, get_url
 
 
 class Search:
-    def __init__(self, queries=[], quantities=[], sort_option="", products=[], product_selected=[], offers_list=[], is_search_end=False):
-        self.products = products
-        self.sort_option = sort_option
-        self.quantities = quantities
+    def __init__(self, queries=[], quantities=[], sort_option="", products=[], product_selected=[], offers_list=[],
+                 is_products_search_end=False, is_offers_search_end=False):
         self.queries = queries
+        self.quantities = quantities
+        self.sort_option = sort_option
+        self.products = products
         self.product_selected = product_selected
         self.offers_list = offers_list
-
-        self.is_search_end = is_search_end
-
-    def search_for_queries(self, queries: list, quantities: list):
-        self.queries = queries
-        self.quantities = quantities
-        for query in self.queries:
-            product_list = get_list_of_products(query, False)  # get_lower_price set to False for testing
-            self.products.append(product_list)
-
-        self.product_selected = [-1 for product_offer in self.products]
-        self.is_search_end = True
+        self.is_products_search_end = is_products_search_end
+        self.is_offers_search_end = is_offers_search_end
 
     def get_product_suggestions(self, product_id) -> list[dict]:
         if not self.products:
@@ -32,7 +23,11 @@ class Search:
         return products
 
     def set_selected_product(self, product_id, option):
-        self.product_selected[product_id] = option
+        if -2 <= option <= 9:
+            print(product_id)
+            self.product_selected[product_id] = option
+        else:
+            raise ValueError('Option must between -2 and 9')
 
     def is_option_selected_for_all(self) -> bool:
         if -1 in self.product_selected:
@@ -58,29 +53,43 @@ class Search:
             self.sort_option = 'shops'
         else:
             self.sort_option = []
-            raise ValueError("Option can only be price or stores")
+            raise ValueError("Option can only be price or shops")
+
+    def get_sorting_option(self):
+        return self.sort_option
 
     def get_offers_by_price(self) -> list[list[dict]]:
-        self.offers_list = []
-        for product in self.get_products_by_options():
-            offer_list = search_item_offers(product['product_id'])
-            self.offers_list.append(offer_list)
         if self.sort_option == 'price':
             return self.offers_list
         raise ValueError("Option is not selected")
 
     def get_offers_by_shops(self):
-        self.offers_list = []
-        for product in self.get_products_by_options():
-            offer_list = search_item_offers(product['product_id'])
-            self.offers_list.append(offer_list)
         if self.sort_option == 'shops':
             return self.sort_by_shop()
+
+    def search_for_queries(self, queries: list, quantities: list):
+        self.queries = queries
+        self.quantities = quantities
+        self.products = []  # without it, there was a problem that products went between searches
+        for query in self.queries:
+            product_list = get_list_of_products(query, False)  # get_lower_price set to False for testing
+            self.products.append(product_list)
+
+        self.product_selected = [-1 for _ in self.products]  # options: -1 not selected, -2 skipped, 0-9 selected option
+        self.is_products_search_end = True
+
+    def search_for_offers(self):
+        self.offers_list = []
+        for product in self.get_products_by_options():
+            offer_list = get_url(product['product_id'])
+            self.offers_list.append(offer_list)
+
+        self.is_offers_search_end = True
 
     def sort_by_shop(self) -> dict[str:list[dict]]:
         # returns {'shop1_name': [offer1_in_shop1,...], 'shop2_name': [...]}
         temp_offers_list = self.offers_list
-        best_shop_offer = {}    # final dict with shops offers
+        best_shop_offer = {}  # final dict with shops offers
         for product_no in range(len(self.offers_list)):
             shop_offers = {}
             # create dict where the key is 'shop_name' and the value is list of product offers in this shop
@@ -96,7 +105,8 @@ class Search:
             # now shop_offers is a dict where value is a list that contains products on the corresponding positions
             # and on other positions the value None
             best_shop = min(shop_offers, key=lambda x: (len([offer for offer in shop_offers[x] if offer is None]),
-                                                        sum(offer['full_price'] for offer in shop_offers[x] if offer is not None)))
+                                                        sum(offer['full_price'] for offer in shop_offers[x] if
+                                                            offer is not None)))
 
             # save best shop offer to the dict
             best_shop_offer[best_shop] = [offer for offer in shop_offers[best_shop] if offer is not None]
@@ -117,4 +127,5 @@ class Search:
     def from_json(json_dct):
         return Search(json_dct['queries'],
                       json_dct['quantities'], json_dct['sort_option'],
-                      json_dct['products'], json_dct['product_selected'], json_dct['offers_list'], json_dct['is_search_end'])
+                      json_dct['products'], json_dct['product_selected'], json_dct['offers_list'],
+                      json_dct['is_products_search_end'], json_dct['is_offers_search_end'])

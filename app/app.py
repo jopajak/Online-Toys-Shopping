@@ -1,4 +1,4 @@
-from flask import Flask, flash, redirect, url_for, session, g
+from flask import Flask, flash, redirect, url_for, session, g, render_template
 from werkzeug.debug import DebuggedApplication
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -45,10 +45,12 @@ def create_app():
         flash('Please log in to access this page!')
         return redirect(url_for('bp_auth.login'))
 
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template('404.html'), 404
+
     @app.before_request
     def before_request():
-        if 'search_engine' not in session:
-            session['search_engine'] = vars(Search())
         key = session.get("key")
         if key:
             try:
@@ -65,7 +67,7 @@ def create_app():
             store_object_in_cache(g.search_engine, key)
 
     def store_object_in_cache(search_engine, key):
-        redis_client.set(key, json.dumps(vars(g.search_engine)))
+        redis_client.set(key, json.dumps(vars(search_engine)))
         return key
 
     def retrieve_object_from_cache(key):
@@ -81,6 +83,7 @@ def create_app():
     def after_request(response):
         key = session.get("key")
         if key:
+
             store_object_in_cache(g.search_engine, key)
         return response
 
