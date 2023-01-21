@@ -1,24 +1,16 @@
 {% extends 'base.html' %}
 {%block content%}
 <div class = "text-content">
+    <div class="btn-product-nav">
+        {% if product_id>0 %}
+        <a href="/product/{{product_id-1}}" ><button class="btn btn-lg btn-product"> <i class="fa-solid fa-left-long"></i> Previous product</button></a>
+        {% else %}
+        <a href="/product/{{product_id-1}}" class="link-disabled"><button class="btn btn-lg btn-product" type="button" disabled> <i class="fa-solid fa-left-long"></i> Previous product</button></a>
+        {% endif %}
 
-        <ul class="navbar-nav ml-auto right" style="margin-top: 1%">
-            <li class="dropdown" style="width: 350px">
-                <button type="button " class="btn btn-form dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="title">Sort by:</span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Vendor</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Price ascending</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Price descending</a></li>
-                </ul>
-            </li>
-        </ul>
+        <a href="/product/{{ product_id }}/-2"><button class="btn btn-lg btn-product-pink">Skip product in searches <i class="fa-solid fa-right-long"></i></button></a>
 
-
-
+    </div>
     {% if products %}
         {% for product in products %}
                 <div class="container shadow p-3 mb-5 bg-white rounded product-container" style="margin-top: 2%;">
@@ -29,10 +21,11 @@
                       <div class="col-lg prod-content-container container">
                           <div class="row product-title">
                               <h3><b>{{ product.get('name') }}</b> </h3>
-                              <h5><b>Price: {{ product.get('price') }}zł</b></h5>
+                              <hr class="rounded-title">
+                              <h4><b>Price: {{ product.get('price') }}zł</b></h4>
                           </div>
                           <div class="row product-buttons">
-                              <a href="{{ product_id }}/{{ loop.index -1 }}"><button class="btn btn-lg btn-product">Choose this product</button></a>
+                              <a href="{{ product_id }}/{{ loop.index -1 }}"><button class="btn btn-lg btn-product-pink">Choose this product</button></a>
                               <a href="https://ceneo.pl/{{ product.get('product_id')}}"><button class="btn btn-lg btn-product">See offer on Ceneo</button></a>
                           </div>
                       </div>

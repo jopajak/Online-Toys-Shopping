@@ -68,10 +68,12 @@ def choose_product_get(product_id):
     p = []
     for product in list_of_products:
         p.append(product)
-    return render_template('product_results.html', user=current_user, products=p, product_id=product_id)
+    product_length = g.search_engine.get_queries_length()
+    return render_template('product_results.html', user=current_user, products=p, product_id=product_id,
+                           product_length=product_length)
 
 
-@bp.route('/product/<int:product_id>/<int:option>')
+@bp.route('/product/<int:product_id>/<int(signed=True):option>')
 def product_answer_option_get(product_id, option):
     try:
         g.search_engine.set_selected_product(product_id, option)
@@ -89,8 +91,8 @@ def result_get():
     if g.search_engine.is_option_selected_for_all():
         form = ProductSortingForm()
         result = g.search_engine.get_products_by_options()
-        return render_template('search_results.html', user=current_user, products=result, form=form)
-
+        product_length = g.search_engine.get_queries_length()
+        return render_template('search_results.html', user=current_user, products=result, form=form, product_length=product_length)
     return redirect(url_for('bp_search.choose_product_get', product_id=g.search_engine.get_first_unselected_product_id()))
 
 

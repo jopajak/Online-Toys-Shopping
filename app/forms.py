@@ -7,16 +7,16 @@ from wtforms.widgets import NumberInput
 
 class SearchForm(FlaskForm):
     query1 = StringField('1st item', validators=[InputRequired(message='This field is required.')],
-                         id='firstQueryInput')
-    query2 = StringField('2nd item', id='secondQueryInput')
-    query3 = StringField('3rd item', id='thirdQueryInput')
-    query4 = StringField('4th item', id='fourthQueryInput')
-    query5 = StringField('5th item', id='fifthQueryInput')
-    query6 = StringField('6th item', id='sixthQueryInput')
-    query7 = StringField('7th item', id='seventhQueryInput')
-    query8 = StringField('8th item', id='eighthQueryInput')
-    query9 = StringField('9th item', id='ninthQueryInput')
-    query10 = StringField('10th item', id='tenthQueryInput')
+                         id='item1')
+    query2 = StringField('2nd item', id='item2')
+    query3 = StringField('3rd item', id='item3')
+    query4 = StringField('4th item', id='item4')
+    query5 = StringField('5th item', id='item5')
+    query6 = StringField('6th item', id='item6')
+    query7 = StringField('7th item', id='item7')
+    query8 = StringField('8th item', id='item8')
+    query9 = StringField('9th item', id='item9')
+    query10 = StringField('10th item', id='item10')
 
     amount1 = IntegerField('Amount', widget=NumberInput(min=0, step=1), default=1)
     amount2 = IntegerField('Amount', widget=NumberInput(min=0, step=1), default=1)
