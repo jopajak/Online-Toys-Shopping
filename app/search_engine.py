@@ -3,7 +3,7 @@ from .ceneo_scrapper import get_list_of_products, get_url
 
 class Search:
     def __init__(self, queries=[], quantities=[], sort_option="", products=[], product_selected=[], offers_list=[],
-                 is_products_search_end=False, is_offers_search_end=False):
+                 is_products_search_end=False, is_offers_search_end=False, last_selected_product=0):
         self.queries = queries
         self.quantities = quantities
         self.sort_option = sort_option
@@ -12,6 +12,7 @@ class Search:
         self.offers_list = offers_list
         self.is_products_search_end = is_products_search_end
         self.is_offers_search_end = is_offers_search_end
+        self.last_selected_product = last_selected_product
 
     def get_product_suggestions(self, product_id) -> list[dict]:
         if not self.products:
@@ -26,22 +27,31 @@ class Search:
         if -2 <= option <= 9:
             print(product_id)
             self.product_selected[product_id] = option
+            self.last_selected_product = product_id
+            self.is_offers_search_end = False   # Any change to a product cancels the previous offer search
         else:
             raise ValueError('Option must between -2 and 9')
 
     def is_option_selected_for_all(self) -> bool:
-        if -1 in self.product_selected:
+        if -1 in self.product_selected or self.last_selected_product < len(self.products) - 1:
             return False
         return True
 
     def get_first_unselected_product_id(self) -> int:
-        return self.product_selected.index(-1)
+        index = 100
+        try:
+            index = self.product_selected.index(-1)
+        except ValueError:
+            pass
+        return min(self.last_selected_product + 1, index)
 
     def get_products_by_options(self) -> list[dict]:
         if self.is_option_selected_for_all():
             products = []
             for i, product_offers in enumerate(self.products):
-                products.append(product_offers[self.product_selected[i]])
+                if not self.product_selected[i] == -2:
+                    # products that were not skipped
+                    products.append(product_offers[self.product_selected[i]])
             return products
 
         raise ValueError("Products are not selected")
@@ -80,6 +90,9 @@ class Search:
 
     def search_for_offers(self):
         self.offers_list = []
+        if not self.get_products_by_options():
+            self.is_offers_search_end = True
+            self.offers_list = []
         for product in self.get_products_by_options():
             offer_list = get_url(product['product_id'])
             self.offers_list.append(offer_list)
@@ -131,4 +144,5 @@ class Search:
         return Search(json_dct['queries'],
                       json_dct['quantities'], json_dct['sort_option'],
                       json_dct['products'], json_dct['product_selected'], json_dct['offers_list'],
-                      json_dct['is_products_search_end'], json_dct['is_offers_search_end'])
+                      json_dct['is_products_search_end'], json_dct['is_offers_search_end'],
+                      json_dct['last_selected_product'])

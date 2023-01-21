@@ -7,11 +7,9 @@
         {% else %}
         <a href="/product/{{product_id-1}}" class="link-disabled"><button class="btn btn-lg btn-product" type="button" disabled> <i class="fa-solid fa-left-long"></i> Previous product</button></a>
         {% endif %}
-        {% if product_id < product_length-1 %}
-        <a href="/product/{{product_id+1}}"><button class="btn btn-lg btn-product-pink">Next product <i class="fa-solid fa-right-long"></i></button></a>
-        {% else %}
-        <a href="/product/{{product_id+1}}" class="link-disabled"><button class="btn btn-lg btn-product-pink" type="button" disabled>Next product <i class="fa-solid fa-right-long"></i></button></a>
-        {% endif %}
+
+        <a href="/product/{{ product_id }}/-2"><button class="btn btn-lg btn-product-pink">Skip product in searches <i class="fa-solid fa-right-long"></i></button></a>
+
     </div>
     {% if products %}
         {% for product in products %}

@@ -73,7 +73,7 @@ def choose_product_get(product_id):
                            product_length=product_length)
 
 
-@bp.route('/product/<int:product_id>/<int:option>')
+@bp.route('/product/<int:product_id>/<int(signed=True):option>')
 def product_answer_option_get(product_id, option):
     try:
         g.search_engine.set_selected_product(product_id, option)
