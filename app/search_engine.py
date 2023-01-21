@@ -99,6 +99,7 @@ class Search:
 
         self.is_offers_search_end = True
 
+    # TODO implement product quantity and delivery price to algorithm
     def sort_by_shop(self) -> dict[str:list[dict]]:
         # returns {'shop1_name': [offer1_in_shop1,...], 'shop2_name': [...]}
         temp_offers_list = self.offers_list

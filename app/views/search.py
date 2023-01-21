@@ -13,7 +13,6 @@ bp = Blueprint('bp_search', __name__)
 def search_post():
     form = SearchForm()
     g.search_engine = Search()
-    search_engine = g.search_engine
     if form.validate_on_submit():
         form_data = form.data
         queries, quantities = read_queries_from_form(form_data)
@@ -28,7 +27,6 @@ def search_post():
 def search_file_post():
     form_file = SearchFormFile()
     g.search_engine = Search()
-    search_engine = g.search_engine
     if form_file.validate_on_submit():
         file_data = form_file.file.data
 
@@ -50,7 +48,6 @@ def search_file_post():
 
 @bp.route('/processing')
 def waiting_page_get():
-    search_engine = g.search_engine
     if g.search_engine.is_products_search_end:
         if g.search_engine.is_offers_search_end:
             return redirect(url_for('bp_search.offers_result_get'))
@@ -58,7 +55,6 @@ def waiting_page_get():
     return render_template('waiting_page.html')
 
 
-# TODO what if no product has been found
 @bp.route('/product/<int:product_id>')
 def choose_product_get(product_id):
     try:
@@ -102,7 +98,6 @@ def result_post():
         return render_template('404.html'), 404
     form = ProductSortingForm()
     if form.validate_on_submit():
-        search_engine = g.search_engine
         if form.option.data == 'price':
             g.search_engine.set_sorting_option('price')
         if form.option.data == 'shops':
@@ -115,7 +110,6 @@ def result_post():
 
 @bp.route('/offers_result')
 def offers_result_get():
-    search_engine = g.search_engine
 
     if not g.search_engine.is_offers_search_end:
         return render_template('404.html'), 404
@@ -179,3 +173,8 @@ def read_queries_from_file(file_data) -> tuple[list[str], list[int]]:
                 quantities.append(int(parts[1].rstrip()))
 
     return queries, quantities
+
+
+# TODO write generate file function
+def generate_file(queries, quantities):
+    pass
