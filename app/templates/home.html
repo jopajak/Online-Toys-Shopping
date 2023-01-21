@@ -76,7 +76,7 @@
              {{ wtf.form_field(form.amount1) }}
             </div>
         </div>
-        <details><summary>add another item</summary>
+        <details id="details1"><summary>add another item</summary>
             <div class ="row form-row">
                 <div style="width: 76%">
                     {{ wtf.form_field(form.query2) }}
@@ -85,7 +85,7 @@
                     {{ wtf.form_field(form.amount2) }}
             </div>
             </div>
-            <details><summary>add another item</summary>
+            <details id="details2"><summary>add another item</summary>
                 <div class ="row form-row">
                     <div style="width: 76%">
                         {{ wtf.form_field(form.query3) }}
@@ -94,7 +94,7 @@
                         {{ wtf.form_field(form.amount3) }}
                     </div>
                 </div>
-                <details><summary>add another item</summary>
+                <details id="details3"><summary>add another item</summary>
                     <div class ="row form-row">
                         <div style="width: 76%">
                             {{ wtf.form_field(form.query4) }}
@@ -103,7 +103,7 @@
                             {{ wtf.form_field(form.amount4) }}
                         </div>
                     </div>
-                    <details><summary>add another item</summary>
+                    <details id="details4"><summary>add another item</summary>
                         <div class ="row form-row">
                             <div style="width: 76%">
                                 {{ wtf.form_field(form.query5) }}
@@ -112,7 +112,7 @@
                                 {{ wtf.form_field(form.amount5) }}
                             </div>
                         </div>
-                        <details><summary>add another item</summary>
+                        <details id="details5"><summary>add another item</summary>
                             <div class ="row form-row">
                                 <div style="width: 76%">
                                     {{ wtf.form_field(form.query6) }}
@@ -121,7 +121,7 @@
                                     {{ wtf.form_field(form.amount6) }}
                                 </div>
                             </div>
-                            <details><summary>add another item</summary>
+                            <details id="details6"><summary>add another item</summary>
                                 <div class ="row form-row">
                                     <div style="width: 76%">
                                         {{ wtf.form_field(form.query7) }}
@@ -130,7 +130,7 @@
                                         {{ wtf.form_field(form.amount7) }}
                                     </div>
                                 </div>
-                                <details><summary>add another item</summary>
+                                <details id="details7"><summary>add another item</summary>
                                     <div class ="row form-row">
                                         <div style="width: 76%">
                                             {{ wtf.form_field(form.query8) }}
@@ -139,7 +139,7 @@
                                             {{ wtf.form_field(form.amount8) }}
                                         </div>
                                     </div>
-                                    <details><summary>add another item</summary>
+                                    <details id="details8"><summary>add another item</summary>
                                         <div class ="row form-row">
                                             <div style="width: 76%">
                                                 {{ wtf.form_field(form.query9) }}
@@ -148,7 +148,7 @@
                                                 {{ wtf.form_field(form.amount9) }}
                                             </div>
                                         </div>
-                                        <details><summary>add another item</summary>
+                                        <details id="details9"><summary>add another item</summary>
                                             <div class ="row form-row">
                                                 <div style="width: 76%">
                                                     {{ wtf.form_field(form.query10) }}
@@ -205,7 +205,9 @@
         const doll = document.getElementById("doll");
         const rattle = document.getElementById("rattle");
         const kite = document.getElementById("kite");
-
+        let item='item';
+        let details ='details';
+        
         button1.addEventListener("click", function() {
             form1.style.display = "flex";
             form2.style.display = "none";
@@ -238,8 +240,6 @@
 
         function random_onload() {
             let random = Math.floor(Math.random() * 4);
-            console.log(random);
-
             setTimeout(() => {
                 switch (random) {
                     case 0:
@@ -257,10 +257,24 @@
             }}, 1500);
         }
 
+        function show_details(){
+            let details_temp = event.target.id.replace(item, details);
+            if (event.target.value!='') {
+                document.getElementById(details_temp).setAttribute("open", "true");
+            }else{
+                document.getElementById(details_temp).removeAttribute("open");
+            }
+        }
+
         train.addEventListener("click", train_animation);
         doll.addEventListener("click", doll_animation);
         rattle.addEventListener("click", rattle_animation);
         kite.addEventListener("click", kite_animation);
+
+        for (let i=1; i<10; i++) {
+            let item_temp = item + i;
+            document.getElementById(item_temp).addEventListener("input", show_details);
+        }
 
         random_onload();
 
