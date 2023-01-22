@@ -15,6 +15,8 @@ from .database import db
 from .models import SearchInfo
 from flask_login import current_user
 
+from .chrome_driver import driver
+
 
 class Product:
     def __init__(self, product_id="", name="", price=0.0, img_link=""):
@@ -72,11 +74,6 @@ def get_list_of_products(search_text, get_lowest_price, min_price=None, max_pric
 
 
 def get_url(product_id):
-    options = webdriver.ChromeOptions()
-    options.headless = True
-    options.add_argument("--user-agent=Mozilla...")
-    options.add_argument("--headless")
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     driver.get('https://www.ceneo.pl/' + product_id + ';0280-0.htm')
     try:
         ele = driver.find_element(By.CSS_SELECTOR, '#click > div:nth-child(2) > div.show-remaining-offers.card__body.pt-0 '
@@ -92,7 +89,6 @@ def get_url(product_id):
         # time to load all offers
         time.sleep(1)
     html_text = driver.page_source
-    driver.quit()
 
     # url_link = 'https://www.ceneo.pl/' + product_id + ';0280-0.htm'
     # html_text = requests.get(url_link)
