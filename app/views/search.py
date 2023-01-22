@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect, url_for, render_template, flash, g
-from flask_login import current_user, login_required
+from flask_login import current_user
 import datetime
 
 from ..forms import SearchForm, SearchFormFile, ProductSortingForm
@@ -20,7 +20,8 @@ def search_post():
     if form.validate_on_submit():
         form_data = form.data
         queries, quantities = read_queries_from_form(form_data)
-        save_queries_to_db(queries)
+        if current_user.is_authenticated:
+            save_queries_to_db(queries)
         g.search_engine.search_for_queries(queries, quantities)
         return redirect(url_for('bp_search.waiting_page_get', option='queries'))
 
@@ -41,7 +42,8 @@ def search_file_post():
                 flash("Errors while processing file")
                 return redirect(url_for('bp_home.home_get'))
 
-            save_queries_to_db(queries)
+            if current_user.is_authenticated:
+                save_queries_to_db(queries)
             g.search_engine.search_for_queries(queries, quantities)
             return redirect(url_for('bp_search.waiting_page_get', option='queries'))
 
@@ -191,7 +193,7 @@ def read_queries_from_file(file_data) -> tuple[list[str], list[int]]:
 def generate_file(queries, quantities):
     pass
 
-@login_required
+
 def save_queries_to_db(queries):
     for search_text in queries:
         db.session.add(SearchInfo(search_text, datetime.datetime.now(), current_user.id))
