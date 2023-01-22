@@ -9,8 +9,8 @@ from celery import Celery
 import uuid
 import json
 
+from .database import db
 
-db = SQLAlchemy()
 mail = Mail()
 redis_client = FlaskRedis()
 celery = Celery(__name__, broker="redis://127.0.0.1:6379/0", backend="redis://127.0.0.1:6379/0")

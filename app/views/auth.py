@@ -4,7 +4,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 
 from ..forms import RegistrationForm, LoginForm
 from ..models import User
-from ..app import db
+from ..database import db
 from ..email import send_email
 from ..token import generate_confirmation_token, confirm_token
 

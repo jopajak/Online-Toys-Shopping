@@ -4,5 +4,13 @@
     <h1>Welcome to CeneoSearch</h1><br>
     <p>Your account is verified.</p>
     <p>Your search history will be visible here.</p>
+    {% for searchinfo in search_infos %}
+                <div class="container" style="margin-top: 2%">
+                    <div class="alert alert-success" role="alert">
+                        {{ searchinfo.phrase }}
+                        {{ searchinfo.date }}
+                    </div>
+                </div>
+        {% endfor %}
 </div>
 {% endblock %}
