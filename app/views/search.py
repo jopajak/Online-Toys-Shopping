@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect, url_for, render_template, flash, g
-from flask_login import current_user
+from flask_login import current_user, login_required
 import datetime
 
 from ..forms import SearchForm, SearchFormFile, ProductSortingForm
@@ -191,7 +191,7 @@ def read_queries_from_file(file_data) -> tuple[list[str], list[int]]:
 def generate_file(queries, quantities):
     pass
 
-
+@login_required
 def save_queries_to_db(queries):
     for search_text in queries:
         db.session.add(SearchInfo(search_text, datetime.datetime.now(), current_user.id))
