@@ -1,11 +1,11 @@
 from .ceneo_scrapper import get_url
 
-from app.tasks import request_for_product
+from app.tasks import request_for_product, request_for_offers
 
 
 class Search:
     def __init__(self, queries=[], quantities=[], sort_option="", products=[], product_selected=[], offers_list=[],
-                 is_products_search_end=False, is_offers_search_end=False, last_selected_product=0, task_id=None):
+                 is_products_search_end=False, is_offers_search_end=False, last_selected_product=0, task_id=None, task_sd_id=None):
         self.queries = queries
         self.quantities = quantities
         self.sort_option = sort_option
@@ -16,6 +16,7 @@ class Search:
         self.is_offers_search_end = is_offers_search_end
         self.last_selected_product = last_selected_product
         self.task_id = task_id
+        self.task_sd_id = task_sd_id
 
     def get_product_suggestions(self, product_id) -> list[dict]:
         if not self.products:
@@ -49,6 +50,7 @@ class Search:
         return min(self.last_selected_product + 1, index)
 
     def get_products_by_options(self) -> list[dict]:
+        print(self.product_selected)
         if self.is_option_selected_for_all():
             products = []
             for i, product_offers in enumerate(self.products):
@@ -85,6 +87,7 @@ class Search:
         self.quantities = quantities
         self.products = []  # without it, there was a problem that products went between searches
         self.task_id = request_for_product.delay(queries).id
+        self.is_products_search_end = False
 
     def check_for_searching_queries(self):
         if request_for_product.AsyncResult(self.task_id).ready():
@@ -92,16 +95,16 @@ class Search:
             self.product_selected = [-1 for _ in self.products]     # options: -1 not selected, -2 skipped, 0-9 selected option
             self.is_products_search_end = True
 
+    # TODO implement search for offers only once
     def search_for_offers(self):
         self.offers_list = []
-        if not self.get_products_by_options():
-            self.is_offers_search_end = True
-            self.offers_list = []
-        for product in self.get_products_by_options():
-            offer_list = get_url(product['product_id'])
-            self.offers_list.append(offer_list)
+        self.is_offers_search_end = False
+        self.task_sd_id = request_for_offers.delay(self.get_products_by_options()).id
 
-        self.is_offers_search_end = True
+    def check_for_searching_offers(self):
+        if request_for_offers.AsyncResult(self.task_sd_id).ready():
+            self.offers_list = request_for_offers.AsyncResult(self.task_sd_id).result
+            self.is_offers_search_end = True
 
     # TODO implement product quantity and delivery price to algorithm
     def sort_by_shop(self) -> dict[str:list[dict]]:
@@ -150,4 +153,4 @@ class Search:
                       json_dct['quantities'], json_dct['sort_option'],
                       json_dct['products'], json_dct['product_selected'], json_dct['offers_list'],
                       json_dct['is_products_search_end'], json_dct['is_offers_search_end'],
-                      json_dct['last_selected_product'], json_dct['task_id'])
+                      json_dct['last_selected_product'], json_dct['task_id'], json_dct['task_sd_id'])

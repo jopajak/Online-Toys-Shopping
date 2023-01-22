@@ -11,10 +11,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from .database import db
-from .models import SearchInfo
-from flask_login import current_user
-
 from .chrome_driver import driver
 
 
@@ -35,8 +31,6 @@ class Offer:
 
 
 def get_list_of_products(search_text, get_lowest_price, min_price=None, max_price=None) -> list:
-    db.session.add(SearchInfo(search_text, datetime.datetime.now(), current_user.id))
-    db.session.commit()
     if get_lowest_price:
         url_link = 'https://www.ceneo.pl/Zabawki;szukaj-' + search_text + ';0112-0.htm'  # filtr od najmniejszej ceny
     else:

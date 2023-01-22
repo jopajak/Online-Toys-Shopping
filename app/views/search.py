@@ -1,8 +1,12 @@
 from flask import Blueprint, redirect, url_for, render_template, flash, g
 from flask_login import current_user
+import datetime
 
 from ..forms import SearchForm, SearchFormFile, ProductSortingForm
 from ..search_engine import Search
+
+from app.database import db
+from app.models import SearchInfo
 
 ALLOWED_EXTENSIONS = {'txt'}
 
@@ -17,8 +21,9 @@ def search_post():
         form_data = form.data
         queries, quantities = read_queries_from_form(form_data)
         # TODO implement the creation of a new thread to search for offers
+        save_queries_to_db(queries)
         g.search_engine.search_for_queries(queries, quantities)
-        return redirect(url_for('bp_search.waiting_page_get'))
+        return redirect(url_for('bp_search.waiting_page_get', option='queries'))
 
     return redirect(url_for('bp_home.home_get'))
 
@@ -37,8 +42,9 @@ def search_file_post():
                 flash("Errors while processing file")
                 return redirect(url_for('bp_home.home_get'))
 
+            save_queries_to_db(queries)
             g.search_engine.search_for_queries(queries, quantities)
-            return redirect(url_for('bp_search.waiting_page_get'))
+            return redirect(url_for('bp_search.waiting_page_get', option='queries'))
 
         flash("Wrong filetype")
         return redirect(url_for('bp_home.home_get'))
@@ -46,14 +52,21 @@ def search_file_post():
     return redirect(url_for('bp_home.home_get'))
 
 
-@bp.route('/processing')
-def waiting_page_get():
-    g.search_engine.check_for_searching_queries()
-    if g.search_engine.is_products_search_end:
+@bp.route('/processing/<option>')
+def waiting_page_get(option):
+    if option == 'queries':
+        g.search_engine.check_for_searching_queries()
+        if g.search_engine.is_products_search_end:
+            return redirect(url_for('bp_search.choose_product_get', product_id=0))
+        return render_template('waiting_page.html')
+
+    if option == 'products':
+        print('products')
+        g.search_engine.check_for_searching_offers()
         if g.search_engine.is_offers_search_end:
             return redirect(url_for('bp_search.offers_result_get'))
-        return redirect(url_for('bp_search.choose_product_get', product_id=0))
-    return render_template('waiting_page.html')
+        return render_template('waiting_page.html')
+    return render_template('404.html'), 404
 
 
 @bp.route('/product/<int:product_id>')
@@ -105,7 +118,7 @@ def result_post():
             g.search_engine.set_sorting_option('shops')
 
         g.search_engine.search_for_offers()
-        return redirect(url_for('bp_search.waiting_page_get'))
+        return redirect(url_for('bp_search.waiting_page_get', option='products'))
     return redirect(url_for('bp_search.result_get'))
 
 
@@ -179,3 +192,9 @@ def read_queries_from_file(file_data) -> tuple[list[str], list[int]]:
 # TODO write generate file function
 def generate_file(queries, quantities):
     pass
+
+
+def save_queries_to_db(queries):
+    for search_text in queries:
+        db.session.add(SearchInfo(search_text, datetime.datetime.now(), current_user.id))
+    db.session.commit()
