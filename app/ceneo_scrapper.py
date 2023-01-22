@@ -88,7 +88,7 @@ def get_url(product_id):
     # html_text = requests.get(url_link)
     soup = BeautifulSoup(html_text, 'lxml')
 
-    total_elements = soup.find_all('div', 'product-offer js_full-product-offer')
+    total_elements = soup.find_all('div', 'product-offer js_full-product-offer') + soup.find_all('div', 'product-offer js_full-product-offer open')
     print(len(total_elements))
 
     offers = []
@@ -148,7 +148,7 @@ def get_url(product_id):
 
             offers.append(Offer(shop_name=shop_name, shop_link=shop_link, base_price=base_price, full_price=final_price))
 
-    offers.sort(key=lambda x: x.full_price)
+    # offers.sort(key=lambda x: x.full_price)
 
     # tuaj możemy zwrócić pierwszą najlepszą oferte albo listę ofert
     return [vars(offer) for offer in offers]    # change product type from Offer object to dict
