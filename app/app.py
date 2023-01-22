@@ -5,14 +5,15 @@ from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail
 from flask_redis import FlaskRedis
+from celery import Celery
 import uuid
 import json
 
-from .search_engine import Search
 
 db = SQLAlchemy()
 mail = Mail()
 redis_client = FlaskRedis()
+celery = Celery(__name__, broker="redis://127.0.0.1:6379/0", backend="redis://127.0.0.1:6379/0")
 
 
 def create_app():
@@ -35,6 +36,7 @@ def create_app():
     db.init_app(app)
     mail.init_app(app)
     redis_client.init_app(app)
+    celery.conf.update(app.config)
 
     @login_manager.user_loader
     def load_user(user_id):
@@ -48,6 +50,8 @@ def create_app():
     @app.errorhandler(404)
     def page_not_found(e):
         return render_template('404.html'), 404
+
+    from .search_engine import Search
 
     @app.before_request
     def before_request():

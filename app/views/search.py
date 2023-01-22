@@ -1,8 +1,8 @@
 from flask import Blueprint, redirect, url_for, render_template, flash, g
 from flask_login import current_user
-from ..search_engine import Search
 
 from ..forms import SearchForm, SearchFormFile, ProductSortingForm
+from ..search_engine import Search
 
 ALLOWED_EXTENSIONS = {'txt'}
 
@@ -48,6 +48,7 @@ def search_file_post():
 
 @bp.route('/processing')
 def waiting_page_get():
+    g.search_engine.check_for_searching_queries()
     if g.search_engine.is_products_search_end:
         if g.search_engine.is_offers_search_end:
             return redirect(url_for('bp_search.offers_result_get'))
