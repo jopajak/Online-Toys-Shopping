@@ -29,7 +29,6 @@ class Search:
 
     def set_selected_product(self, product_id, option):
         if -2 <= option <= 9:
-            print(product_id)
             self.product_selected[product_id] = option
             self.last_selected_product = product_id
             self.is_offers_search_end = False   # Any change to a product cancels the previous offer search
@@ -50,7 +49,6 @@ class Search:
         return min(self.last_selected_product + 1, index)
 
     def get_products_by_options(self) -> list[dict]:
-        print(self.product_selected)
         if self.is_option_selected_for_all():
             products = []
             for i, product_offers in enumerate(self.products):

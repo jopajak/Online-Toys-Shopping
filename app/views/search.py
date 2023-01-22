@@ -60,7 +60,6 @@ def waiting_page_get(option):
         return render_template('waiting_page.html')
 
     if option == 'products':
-        print('products')
         g.search_engine.check_for_searching_offers()
         if g.search_engine.is_offers_search_end:
             return redirect(url_for('bp_search.offers_result_get'))
