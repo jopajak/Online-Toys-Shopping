@@ -177,7 +177,7 @@
     <div class="tab-content" id="nav-tabContent-file">
         <div class="tab-pane fade show active" id="nav-home-file" role="tabpanel" aria-labelledby="nav-home-tab">
             <p>Search in:</p>
-            {{ wtf.form_field(form_file.platform) }}
+            {{ wtf.form_field(form_file.platform_file) }}
         </div>
     </div>
     </div>
@@ -275,6 +275,12 @@
             let item_temp = item + i;
             document.getElementById(item_temp).addEventListener("input", show_details);
         }
+
+        //disabling Allegro and A&C options in forms
+        document.getElementById("platform-1").disabled=true;
+        document.getElementById("platform-2").disabled=true;
+        document.getElementById("platform_file-1").disabled=true;
+        document.getElementById("platform_file-2").disabled=true;
 
         random_onload();
 

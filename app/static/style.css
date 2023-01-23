@@ -37,7 +37,7 @@ details{
 .btn-product-nav{
     display: flex;
     justify-content: center;
-    gap: 5%;
+    gap: 2%;
 }
 
 .btn-back{
@@ -172,28 +172,25 @@ details{
             border: rgba(88, 172, 255, 0.99) !important;
     }
         .btn-product {
-            margin-left: auto;
+            height: 100%;
             background-color: rgba(88, 172, 255, 0.99) !important;
             color: white;
             border: rgba(88, 172, 255, 0.99) !important;
     }
 
         .btn-product-pink {
-            margin-left: auto;
             background-color: rgba(240, 99, 191,0.99)!important;
             color: white;
             border: rgba(240, 99, 191,0.99) !important;
         }
 
         .btn-product-pink:hover {
-            margin-left: auto;
             background-color: rgba(240, 99, 191,0.6)!important;
             color: white;
             border: rgba(240, 99, 191,0.6) !important;
         }
 
         .btn-product:hover {
-            margin-left: auto;
             background-color: rgba(88, 172, 255, 0.6) !important;
             color: white;
             border: rgba(88, 172, 255, 0.8) !important;
@@ -219,6 +216,20 @@ details{
             color: white;
             border: rgba(88, 172, 255, 0.8) !important;
     }
+
+        .cancel{
+            background-color: rgba(169,169,169);
+            color: white;
+        }
+
+        .cancel:hover{
+            background-color: rgba(169,169,169,0.6);
+            color: white;
+        }
+
+        .modal-content{
+            color: rgb(76, 148, 222);
+        }
 
         .choose-form {
             display:flex;

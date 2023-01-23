@@ -3,13 +3,36 @@
 <div class = "text-content">
     <div class="btn-product-nav">
         {% if product_id>0 %}
-        <a href="/product/{{product_id-1}}" ><button class="btn btn-lg btn-product"> <i class="fa-solid fa-left-long"></i> Previous product</button></a>
+        <a href="/product/{{product_id-1}}" ><button class="btn btn-lg btn-product"> <i class="fa-solid fa-left-long"></i>  Previous product</button></a>
         {% else %}
         <a href="/product/{{product_id-1}}" class="link-disabled"><button class="btn btn-lg btn-product" type="button" disabled> <i class="fa-solid fa-left-long"></i> Previous product</button></a>
         {% endif %}
-
-        <a href="/product/{{ product_id }}/-2"><button class="btn btn-lg btn-product-pink">Skip product in searches <i class="fa-solid fa-right-long"></i></button></a>
-
+        <button class="btn btn-lg btn-product-pink" data-toggle="modal" data-target="#skip_modal">Skip product in searches <i class="fa-solid fa-x"></i></button>
+        {% if product_id < product_length - 1 %}
+        <a href="/product/{{product_id+1}}" ><button class="btn btn-lg btn-product">Next product <i class="fa-solid fa-right-long"></i></button></a>
+        {% else %}
+        <a href="/product/{{product_id+1}}" class="link-disabled"><button class="btn btn-lg btn-product" type="button" disabled>Next product <i class="fa-solid fa-right-long"></i></button></a>
+        {% endif %}
+    </div>
+    <div class="modal fade" id="skip_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered"  role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><b>Skip product</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5><b>Are you sure you want to skip this product?</b></h5>
+                    <b>This product will not be taken into account on your final list of products and offers.</b>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-product-pink" href="/product/{{ product_id }}/-2">Skip product <i class="fa-solid fa-x"></i></a>
+                    <button type="button" class="btn cancel" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
     </div>
     {% if products %}
         {% for product in products %}

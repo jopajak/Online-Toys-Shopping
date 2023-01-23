@@ -44,8 +44,8 @@ class SearchFormFile(FlaskForm):
     file = FileField('Shopping list', name="file", validators=[FileRequired()])
 
     # filters
-    platform = RadioField('Platform', choices=[('Ceneo', 'Ceneo'), ('Allegro', 'Allegro (not available)'),
-                                               ('C&A', 'Ceneo&Allegro (not available)')], default='Ceneo')
+    platform_file = RadioField('Platform', choices=[('Ceneo', 'Ceneo'), ('Allegro', 'Allegro (not available)'),
+                                                    ('C&A', 'Ceneo&Allegro (not available)')], default='Ceneo')
     price_min = IntegerField('Price from', widget=NumberInput(min=0, step=1), render_kw={"placeholder": "PLN"},
                              validators=[Optional()])
     price_max = IntegerField('Price to', widget=NumberInput(min=0, step=1), render_kw={"placeholder": "PLN"},
