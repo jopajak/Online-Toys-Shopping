@@ -15,5 +15,5 @@ def history_get():
     take = args.get("take", default=10, type=int)
     skip = args.get("skip", default=0, type=int)
     search_infos = SearchInfo.query.filter_by(user_id=current_user.id).order_by(SearchInfo.date.desc())\
-        .offset(skip).limit(take).all()
+        .offset(skip).all()
     return render_template('history.html',  user=current_user, search_infos=search_infos)

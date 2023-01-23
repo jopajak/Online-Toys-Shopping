@@ -145,6 +145,24 @@ details{
             gap: 1vw;
         }
 
+        .history-title{
+            overflow-wrap: break-word;
+        }
+
+        .history-container{
+            min-width:60vw;
+        }
+
+        .date{
+            margin-right: auto;
+            color: rgba(240, 99, 191);
+            white-space:nowrap;
+
+        }
+        .search{
+            margin-right: auto;
+        }
+
 
         .btn-login {
             margin-left: auto;
@@ -413,6 +431,10 @@ details{
 
             hr{
                 border-top: 1px solid white;
+            }
+
+            hr.history{
+                 border-top: 1px solid rgba(88, 172, 255, 0.4);
             }
 
         #main-footer{
