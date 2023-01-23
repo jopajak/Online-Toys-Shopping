@@ -1,16 +1,46 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="empty-site-background">
+    {% if not search_infos %}
     <h1>Welcome to CeneoSearch</h1><br>
     <p>Your account is verified.</p>
     <p>Your search history will be visible here.</p>
+    {% else %}
+    <div class="container shadow p-3 mb-5 bg-white rounded history-container">
+        <div class="history-title">
+            <h1>Your search history</h1>
+        </div>
+        <hr class="rounded-title">
+        <div class="container">
     {% for searchinfo in search_infos %}
-                <div class="container" style="margin-top: 2%">
-                    <div class="alert alert-success" role="alert">
-                        {{ searchinfo.phrase }}
-                        {{ searchinfo.date }}
+        {% if loop.index > 1 %}
+        {% if search_infos[loop.index-2].date != searchinfo.date %}
+        <hr class="history">
+        {% endif %}
+        {% endif %}
+            <div class="row">
+                {% if loop.index > 1 %}
+                    {% if search_infos[loop.index-2].date != searchinfo.date %}
+                        <div class="col-md-4 date">
+                            <b>{{ searchinfo.date }}</b>
+                        </div>
+                    {% else %}
+                        <div class="col-md-4 date">
+                            <b></b>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="col-md-4 date">
+                        <b>{{ searchinfo.date }}</b>
                     </div>
-                </div>
+                {% endif %}
+                    <div class="col-md-5 search">
+                        <b>{{ searchinfo.phrase }}</b>
+                    </div>
+            </div>
         {% endfor %}
+            </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
