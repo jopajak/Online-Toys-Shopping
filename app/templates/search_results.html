@@ -2,6 +2,7 @@
 {%import "bootstrap/wtf.html" as wtf %}
 {%block content%}
 <div class = "text-content">
+    {% if products %}
     <div class="btn-product-nav btn-back">
         <a href="/product/{{product_length-1}}" ><button class="btn btn-lg btn-product"> <i class="fa-solid fa-left-long"></i> Go back </button></a>
     </div>
@@ -20,7 +21,6 @@
          </div>
         </div>
     </form>
-    {% if products %}
         {% for product in products %}
              <div class="container shadow p-3 mb-5 bg-white rounded product-container" style="margin-top: 2%;">
                   <div class="row" style="margin-right: 2%">
@@ -40,6 +40,12 @@
                   </div>
              </div>
         {% endfor %}
+    {% else %}
+    <div class="btn-product-nav btn-back">
+        <a href="{{ url_for('bp_home.home_get') }}" ><button class="btn btn-lg btn-product"> <i class="fa-solid fa-left-long"></i> Go back to homepage</button></a>
+    </div>
+    <h2>No products has been selected</h2>
+     <h4 class="text-pink" style="margin-bottom: 5%;">Go back to homepage to search for other products</h4>
     {% endif %}
 </div>
 {%endblock%}
