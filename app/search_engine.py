@@ -104,7 +104,6 @@ class Search:
             self.offers_list = request_for_offers.AsyncResult(self.task_sd_id).result
             self.is_offers_search_end = True
 
-    # TODO implement product quantity and delivery price to algorithm
     def sort_by_shop(self) -> dict[str:list[dict]]:
         # returns {'shop1_name': [offer1_in_shop1,...], 'shop2_name': [...]}
         temp_offers_list = self.offers_list
@@ -123,9 +122,19 @@ class Search:
 
             # now shop_offers is a dict where value is a list that contains products on the corresponding positions
             # and on other positions the value None
-            best_shop = min(shop_offers, key=lambda x: (len([offer for offer in shop_offers[x] if offer is None]),
-                                                        sum(offer['full_price'] for offer in shop_offers[x] if
-                                                            offer is not None)))
+            def key_func(shop):
+                offers = shop_offers[shop]
+                shop_offers_price = sum([offer['base_price']*self.quantities[product_index]
+                                         for product_index, offer in enumerate(offers) if offer is not None])
+                delivery_cost = max((offer['base_price'] - offer['base_price'])
+                                     for offer in offers if offer is not None)
+                total_price = shop_offers_price + delivery_cost
+
+                # Returns a tuple with two ints first compares the number of items in a store, if the number of products
+                # in more than one store is the same, the total cost is compared
+                return len([offer for offer in offers if offer is None]), total_price
+
+            best_shop = min(shop_offers, key=key_func)
 
             # save best shop offer to the dict
             best_shop_offer[best_shop] = [offer for offer in shop_offers[best_shop] if offer is not None]
