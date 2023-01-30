@@ -63,6 +63,11 @@
                   </div>
              </div>
         {% endfor %}
+    {% else %}
+            <p style="margin-top: 2%">Sorry, we couldn't find such toys.</p>
+            <a href="{{ url_for('bp_home.home_get') }}">
+                <button class="btn btn-lg btn-product">Go to main page</button>
+            </a>
     {% endif %}
 </div>
 {%endblock%}
