@@ -69,7 +69,7 @@ class Search:
 
         raise ValueError("Products are not selected")
 
-    def set_sorting_option(self, option):
+    def set_sorting_option(self, option: str):
         if option == 'price':
             self.sort_option = 'price'
         elif option == 'shops':
@@ -182,7 +182,7 @@ class Search:
         return len(self.queries)
 
     @staticmethod
-    def from_json(json_dct):
+    def from_json(json_dct: dict):
         """
         Method that creates an object based on data read from JSON
         """
