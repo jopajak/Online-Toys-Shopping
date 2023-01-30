@@ -12,32 +12,25 @@
         </div>
         <hr class="rounded-title">
         <div class="container">
-    {% for searchinfo in search_infos %}
+    {% for date in search_infos.keys() %}
         {% if loop.index > 1 %}
-        {% if search_infos[loop.index-2].date != searchinfo.date %}
         <hr class="history">
         {% endif %}
-        {% endif %}
-            <div class="row">
-                {% if loop.index > 1 %}
-                    {% if search_infos[loop.index-2].date != searchinfo.date %}
-                        <div class="col-md-4 date">
-                            <b>{{ searchinfo.date }}</b>
+            <a href="history/{{ loop.index - 1}}">
+                <div class="row">
+                    <div class="col-md-4 date">
+                        <b>{{ date }}</b>
+                    </div>
+                    {% for query in search_infos[date] %}
+                        <div class="col-md-5 search">
+                            <b>{{ query }}</b>
                         </div>
-                    {% else %}
-                        <div class="col-md-4 date">
+                        <div class="col-md-4 search">
                             <b></b>
                         </div>
-                    {% endif %}
-                {% else %}
-                    <div class="col-md-4 date">
-                        <b>{{ searchinfo.date }}</b>
-                    </div>
-                {% endif %}
-                    <div class="col-md-5 search">
-                        <b>{{ searchinfo.phrase }}</b>
-                    </div>
-            </div>
+                    {% endfor %}
+                </div>
+            </a>
         {% endfor %}
             </div>
     </div>

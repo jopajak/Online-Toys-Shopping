@@ -1,6 +1,8 @@
 from flask import Blueprint, redirect, url_for, render_template, flash, g
 from flask_login import current_user
+
 import datetime
+import json
 
 from ..forms import SearchForm, SearchFormFile, ProductSortingForm
 from ..search_engine import Search
@@ -172,7 +174,7 @@ def check_file(file) -> bool:
 
 
 def read_queries_from_file(file_data) -> tuple[list[str], list[int]]:
-    # Function reads the contents of a text file
+    # A function reads the contents of a text file
     lines = file_data.read().decode('utf-8').split('\n')
     queries = []
     quantities = []
@@ -195,6 +197,5 @@ def generate_file(queries, quantities):
 
 
 def save_queries_to_db(queries):
-    for search_text in queries:
-        db.session.add(SearchInfo(search_text, datetime.datetime.now(), current_user.id))
+    db.session.add(SearchInfo(json.dumps(queries), datetime.datetime.now(), current_user.id))
     db.session.commit()
