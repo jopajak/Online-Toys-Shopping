@@ -218,6 +218,7 @@
             form2.style.display = "flex";
         });
 
+        // functions to animate toys
         function train_animation(){
             train.style.animation = '3s anim-move';
             setTimeout(() => {  train.style.animation -= '3s anim-move';}, 3000);
@@ -238,6 +239,7 @@
             setTimeout(() => {  kite.style.animation -= '3s fly-out';}, 3000);
         }
 
+        //function to random animation of toys  on load
         function random_onload() {
             let random = Math.floor(Math.random() * 4);
             setTimeout(() => {
@@ -257,12 +259,26 @@
             }}, 1500);
         }
 
+        // function to show query field after completing the previous one
         function show_details(){
             let details_temp = event.target.id.replace(item, details);
             if (event.target.value!='') {
                 document.getElementById(details_temp).setAttribute("open", "true");
             }else{
                 document.getElementById(details_temp).removeAttribute("open");
+            }
+        }
+
+
+        // function showing not empty query fields e.g. after choosing history query
+        function show_not_empty_onload(){
+            for(let i = 2; i<=10; i++){
+                let query_curr = item.concat(i);
+                let details_num = i-1;
+                let details_temp = query_curr.replace(query_curr,details).concat(details_num);
+                if (document.getElementById(query_curr).value.length !== 0){
+                    document.getElementById(details_temp).setAttribute("open", "true");
+                }
             }
         }
 
@@ -282,6 +298,7 @@
         document.getElementById("platform_file-1").disabled=true;
         document.getElementById("platform_file-2").disabled=true;
 
+        show_not_empty_onload();
         random_onload();
 
     </script>
