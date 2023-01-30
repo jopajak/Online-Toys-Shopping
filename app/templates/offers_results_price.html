@@ -14,7 +14,7 @@
                             <h3><b>{{ product.get('name') }}</b> </h3>
                             <hr class="rounded-title">
                             {% if offers %}
-                            <h4><b>Full price: {{ offers[loop.index - 1][0].get('full_price')}}zł</b></h4>
+                            <h4><b>Full price:</b> <b id="price_{{loop.index}}">{{ offers[loop.index - 1][0].get('full_price')}}</b><b>zł</b></h4>
                             <h4><b>Store: {{ offers[loop.index - 1][0].get('shop_name') }}</b></h4>
                             {% endif %}
                         </div>
@@ -28,6 +28,26 @@
                 </div>
             </div>
         {% endfor %}
+        <div class="container p-3 mb-5 " id="total">
+            <h2 class="total_price"><b id="total_price">Total price: </b><b>zł</b></h2>
+        </div>
     {% endif %}
 </div>
 {%endblock%}
+
+{% block scripts %}
+<script>
+    // function that sums up all prices and shows total price at the bottom of the page
+    function sum_total() {
+        let total_price = 0;
+        var prices = document.querySelectorAll('[id^="price_"]');
+        prices.forEach(function (price) {
+            total_price = total_price + parseFloat(price.textContent);
+        });
+        document.getElementById("total_price").innerHTML += total_price.toFixed(2);;
+        console.log(total_price);
+    }
+
+    sum_total();
+</script>
+{% endblock %}

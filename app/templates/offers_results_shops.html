@@ -12,7 +12,7 @@
                             <hr class="rounded-title">
                         </div>
                         {% for offer in shops_offers[shop] %}
-                            <h4 ><b>Full price: {{ offer.get('full_price') }}zł</b></h4>
+                            <h4><b>Full price: </b><b id="shop_price_{{loop.index}}">{{ offer.get('full_price') }}zł</b></h4>
                         <div class="row offer-buttons">
                               <a href="https://{{ offer.get('shop_link') }}"><button class="btn btn-lg btn-product">See offer on {{ offer.get('shop_name') }}</button></a>
                         </div>
@@ -24,6 +24,26 @@
                   </div>
              </div>
     {% endfor %}
+    <div class="container p-3 mb-5 " id="total">
+            <h2 class="total_price"><b id="total_price">Total price: </b><b>zł</b></h2>
+    </div>
     {% endif %}
 </div>
 {%endblock%}
+
+{% block scripts %}
+<script>
+    // function that sums up all prices and shows total price at the bottom of the page
+    function sum_total() {
+        let total_price = 0;
+        var prices = document.querySelectorAll('[id^="shop_price_"]');
+        prices.forEach(function (price) {
+            total_price = total_price + parseFloat(price.textContent);
+        });
+        document.getElementById("total_price").innerHTML += total_price.toFixed(2);;
+        console.log(total_price);
+    }
+
+    sum_total();
+</script>
+{% endblock %}
