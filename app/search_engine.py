@@ -18,7 +18,10 @@ class Search:
         self.task_id = task_id
         self.task_sd_id = task_sd_id
 
-    def get_product_suggestions(self, product_id) -> list[dict]:
+    def get_product_suggestions(self, product_id: int) -> list[dict]:
+        """
+        Returns a list of products previously found based on a query.
+        """
         if not self.products:
             raise ValueError("Offers list is empty!")
         try:
@@ -27,7 +30,11 @@ class Search:
             raise ValueError("Index must be between 0 and " + str(len(self.products) - 1))
         return products
 
-    def set_selected_product(self, product_id, option):
+    def set_selected_product(self, product_id: int, option: int):
+        """
+        Sets the selected product variant for the list of found products based on the query,
+        where -2 is the skipped product, -1 the default option (not set), 0-9 index the selected option.
+        """
         if -2 <= option <= 9:
             self.product_selected[product_id] = option
             self.last_selected_product = product_id
@@ -49,6 +56,9 @@ class Search:
         return min(self.last_selected_product + 1, index)
 
     def get_products_by_options(self) -> list[dict]:
+        """
+        Returns a list of selected products, without omitted products
+        """
         if self.is_option_selected_for_all():
             products = []
             for i, product_offers in enumerate(self.products):
@@ -79,32 +89,49 @@ class Search:
     def get_offers_by_shops(self):
         if self.sort_option == 'shops':
             return self.sort_by_shop()
+        raise ValueError("Option is not selected")
 
-    def search_for_queries(self, queries: list, quantities: list):
+    def search_for_products(self, queries: list, quantities: list):
+        """
+        Delegates product search to a separate task
+        """
         self.queries = queries
         self.quantities = quantities
-        self.products = []  # without it, there was a problem that products went between searches
+        self.products = []  # without it, there was a problem that products passed between searches
         self.task_id = request_for_product.delay(queries).id
         self.is_products_search_end = False
 
-    def check_for_searching_queries(self):
+    def check_for_searching_products(self):
+        """
+        A method used to check if search results from a separate task are already available
+        """
         if request_for_product.AsyncResult(self.task_id).ready():
             self.products = request_for_product.AsyncResult(self.task_id).result
-            self.product_selected = [-1 for _ in self.products]     # options: -1 not selected, -2 skipped, 0-9 selected option
+            self.product_selected = [-1 for _ in self.products]     # option -1 means not selected
             self.is_products_search_end = True
 
     def search_for_offers(self):
+        """
+        Delegates offers search to a separate task
+        """
         if not self.is_offers_search_end:
             self.offers_list = []
             self.is_offers_search_end = False
             self.task_sd_id = request_for_offers.delay(self.get_products_by_options()).id
 
     def check_for_searching_offers(self):
+        """
+        A method for checking whether the results of a search for offers from a separate task are already available
+        """
         if request_for_offers.AsyncResult(self.task_sd_id).ready():
             self.offers_list = request_for_offers.AsyncResult(self.task_sd_id).result
             self.is_offers_search_end = True
 
     def sort_by_shop(self) -> dict[str:list[dict]]:
+        """
+         A method that sorts offers so that the number of stores where offers are available is as small as possible
+         and the price is as low as possible
+        """
         # returns {'shop1_name': [offer1_in_shop1,...], 'shop2_name': [...]}
         temp_offers_list = self.offers_list
         best_shop_offer = {}  # final dict with shops offers
@@ -156,6 +183,9 @@ class Search:
 
     @staticmethod
     def from_json(json_dct):
+        """
+        Method that creates an object based on data read from JSON
+        """
         return Search(json_dct['queries'],
                       json_dct['quantities'], json_dct['sort_option'],
                       json_dct['products'], json_dct['product_selected'], json_dct['offers_list'],

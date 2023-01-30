@@ -22,7 +22,7 @@ def search_post():
         queries, quantities = read_queries_from_form(form_data)
         if current_user.is_authenticated:
             save_queries_to_db(queries)
-        g.search_engine.search_for_queries(queries, quantities)
+        g.search_engine.search_for_products(queries, quantities)
         return redirect(url_for('bp_search.waiting_page_get', option='queries'))
 
     return redirect(url_for('bp_home.home_get'))
@@ -44,7 +44,7 @@ def search_file_post():
 
             if current_user.is_authenticated:
                 save_queries_to_db(queries)
-            g.search_engine.search_for_queries(queries, quantities)
+            g.search_engine.search_for_products(queries, quantities)
             return redirect(url_for('bp_search.waiting_page_get', option='queries'))
 
         flash("Wrong filetype")
@@ -56,7 +56,7 @@ def search_file_post():
 @bp.route('/processing/<option>')
 def waiting_page_get(option):
     if option == 'queries':
-        g.search_engine.check_for_searching_queries()
+        g.search_engine.check_for_searching_products()
         if g.search_engine.is_products_search_end:
             return redirect(url_for('bp_search.choose_product_get', product_id=0))
         return render_template('waiting_page.html')
