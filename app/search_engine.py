@@ -93,11 +93,11 @@ class Search:
             self.product_selected = [-1 for _ in self.products]     # options: -1 not selected, -2 skipped, 0-9 selected option
             self.is_products_search_end = True
 
-    # TODO implement search for offers only once
     def search_for_offers(self):
-        self.offers_list = []
-        self.is_offers_search_end = False
-        self.task_sd_id = request_for_offers.delay(self.get_products_by_options()).id
+        if not self.is_offers_search_end:
+            self.offers_list = []
+            self.is_offers_search_end = False
+            self.task_sd_id = request_for_offers.delay(self.get_products_by_options()).id
 
     def check_for_searching_offers(self):
         if request_for_offers.AsyncResult(self.task_sd_id).ready():
