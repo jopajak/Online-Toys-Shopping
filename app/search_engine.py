@@ -133,7 +133,7 @@ class Search:
          and the price is as low as possible
         """
         # returns {'shop1_name': [offer1_in_shop1,...], 'shop2_name': [...]}
-        temp_offers_list = self.offers_list
+        temp_offers_list = self.offers_list.copy()
         best_shop_offer = {}  # final dict with shops offers
         for product_no in range(len(self.offers_list)):
             shop_offers = {}
