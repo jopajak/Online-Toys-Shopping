@@ -23,11 +23,12 @@ class Product:
 
 
 class Offer:
-    def __init__(self, shop_name, shop_link, base_price, full_price):
+    def __init__(self, shop_name, shop_link, base_price, full_price, product_id):
         self.shop_name = shop_name
         self.shop_link = 'www.ceneo.pl' + shop_link
         self.base_price = base_price
         self.full_price = full_price
+        self.product_id = product_id
 
 
 def get_list_of_products(search_text, get_lowest_price, min_price=None, max_price=None) -> list:
@@ -120,7 +121,7 @@ def get_url(product_id):
             if shop_name == 'allegro.pl':
                 continue
 
-            offers.append(Offer(shop_name=shop_name, shop_link=shop_link, base_price=base_price, full_price=final_price))
+            offers.append(Offer(shop_name=shop_name, shop_link=shop_link, base_price=base_price, full_price=final_price, product_id=product_id))
 
         # tutaj inny web scraping dla ofert, które pochodzą od sprzedawców zarejestrowanych na ceneo (czyli nie tych
         # z zewnątrz jak amazon itp.)
@@ -146,7 +147,7 @@ def get_url(product_id):
             elif delivery_price_txt.__contains__('Darmowa'):
                 final_price = float(0.0)
 
-            offers.append(Offer(shop_name=shop_name, shop_link=shop_link, base_price=base_price, full_price=final_price))
+            offers.append(Offer(shop_name=shop_name, shop_link=shop_link, base_price=base_price, full_price=final_price, product_id=product_id))
 
     # offers.sort(key=lambda x: x.full_price)
 
