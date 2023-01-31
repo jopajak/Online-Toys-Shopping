@@ -12,21 +12,37 @@
                             <hr class="rounded-title">
                         </div>
                         {% for offer in shops_offers[shop] %}
-                            <h4><b>Full price: </b><b id="shop_price_{{loop.index}}">{{ offer.get('full_price') }}zł</b></h4>
-                            <h4>{{ offer.get('price_id') }}</h4>
+                            {% for product in products %}
+                                {% if product.get('product_id')==offer.get('product_id') %}
+                                    <div class="row" style="margin-right: 2%">
+                                        <div class="col-md-3" style="margin: auto;">
+                                            <a href="http://{{product.get('img_link')}}"><img src="http://{{product.get('img_link')}}"></a>
+                                        </div>
+                                        <div class="col-lg prod-content-container container">
+                                            <div class="row product-title" style="margin: auto;">
+                                                <h3><b>{{ product.get('name') }}</b> </h3>
+                                                <hr class="rounded-violet">
+                                                <h4><b>Price: </b><b id="shop_price_{{loop.index}}">{{ offer.get('base_price') }}zł</b></h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
                         <div class="row offer-buttons">
-                              <a href="https://{{ offer.get('shop_link') }}"><button class="btn btn-lg btn-product">See offer on {{ offer.get('shop_name') }}</button></a>
+                              <a href="https://{{ offer.get('shop_link') }}"><button class="btn btn-lg btn-product-pink">See offer on {{ offer.get('shop_name') }}</button></a>
                         </div>
                         {% if loop.index > 0 and loop.last==false%}
                             <hr class="rounded" style="margin: 3% 1% 3% 3%;">
                         {%endif%}
                         {% endfor %}
+                        <h4>Delivery cost: <b id="delivery_{{loop.index}}">{{shops_offers[shop][0].get('full_price') - shops_offers[shop][0].get('base_price') }}</b>zł</h4>
                       </div>
                   </div>
              </div>
     {% endfor %}
-    <div class="container p-3 mb-5 " id="total">
+    <div class="container p-3 mb-5 " id="total" style="display: block">
             <h2 class="total_price"><b id="total_price">Total price: </b><b>zł</b></h2>
+            <small><i>Includes prices of all products and delivery cost from all shops (one delivery cost from each shop)</i></small>
     </div>
     {% endif %}
 </div>
@@ -38,13 +54,26 @@
     function sum_total() {
         let total_price = 0;
         var prices = document.querySelectorAll('[id^="shop_price_"]');
+        var delivery_prices = document.querySelectorAll('[id^="delivery_"]');
         prices.forEach(function (price) {
             total_price = total_price + parseFloat(price.textContent);
         });
+        delivery_prices.forEach(function (delivery) {
+            total_price = total_price + parseFloat(delivery.textContent);
+        });
         document.getElementById("total_price").innerHTML += total_price.toFixed(2);
-        console.log(total_price);
+    }
+
+    function round_delivery(){
+        let i = 1;
+        var delivery_prices = document.querySelectorAll('[id^="delivery_"]');
+        delivery_prices.forEach(function (delivery) {
+            document.getElementById("delivery_".concat(i)).innerHTML = parseFloat(delivery.textContent).toFixed(2);
+            i=i+1;
+        });
     }
 
     sum_total();
+    round_delivery();
 </script>
 {% endblock %}

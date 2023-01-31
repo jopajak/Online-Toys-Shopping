@@ -9,11 +9,6 @@
         <a href="/product/{{product_id-1}}" class="link-disabled"><button class="btn btn-lg btn-product" type="button" disabled> <i class="fa-solid fa-left-long"></i> Previous product</button></a>
         {% endif %}
         <button class="btn btn-lg btn-product-pink" data-toggle="modal" data-target="#skip_modal">Skip product in searches <i class="fa-solid fa-x"></i></button>
-        {% if product_id < product_length - 1 %}
-        <a href="/product/{{product_id+1}}" ><button class="btn btn-lg btn-product">Next product <i class="fa-solid fa-right-long"></i></button></a>
-        {% else %}
-        <a href="/product/{{product_id+1}}" class="link-disabled"><button class="btn btn-lg btn-product" type="button" disabled>Next product <i class="fa-solid fa-right-long"></i></button></a>
-        {% endif %}
         {% else %}
         <div style="margin-top: 2%;">
             <h1 style="margin-bottom: 5%;">No products has been found</h1>
