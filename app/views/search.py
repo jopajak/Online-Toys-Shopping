@@ -40,7 +40,7 @@ def search_file_post():
         if check_file(file_data):
             try:
                 queries, quantities = read_queries_from_file(file_data)
-            except:     # TODO specify Errors
+            except Exception as e:
                 flash("Errors while processing file")
                 return redirect(url_for('bp_home.home_get'))
 
@@ -199,26 +199,35 @@ def check_file(file) -> bool:
 def read_queries_from_file(file_data) -> tuple[list[str], list[int]]:
     # A function reads the contents of a text file
     lines = file_data.read().decode('utf-8').split('\n')
+    lines = [line.strip() for line in lines if line and line.strip()]
     queries = []
     quantities = []
 
+    if len(lines) > 10:
+        raise ValueError('Too many lines in the file')
+
     for line in lines:
         if line:  # check if the string is non-empty
-            parts = line.split('\t')    # parts[0] is a query text, parts[1] is number of products in the query
+            parts = line.split('\t', 1)    # parts[0] is a query text, parts[1] is number of products in the query
+
+            if len(parts[0]) > 90:
+                raise ValueError('Too large a query')
+
             queries.append(parts[0])
-            if not any(c.isdigit() for c in parts[1]):
+            try:
+                quantity = int(parts[1].strip())
+            except:
                 quantities.append(1)
             else:
-                quantities.append(int(parts[1].rstrip()))
+                quantities.append(quantity)
 
     return queries, quantities
 
 
-# TODO write generate file function
-def generate_file(queries, quantities):
-    pass
-
-
 def save_queries_to_db(queries):
+    total_len = sum(len(query) for query in queries)
+    # checks that the record is not too long to be stored in the db
+    if total_len >= 950:
+        return
     db.session.add(SearchInfo(json.dumps(queries), datetime.datetime.now(), current_user.id))
     db.session.commit()

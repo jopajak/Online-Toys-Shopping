@@ -20,7 +20,7 @@ class User(UserMixin, db.Model):
 class SearchInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime, default=datetime.datetime.now())
-    phrase = db.Column(db.String(100))
+    phrase = db.Column(db.String(1000))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __init__(self, phrase, date, user_id):
