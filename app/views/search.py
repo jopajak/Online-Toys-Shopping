@@ -59,7 +59,11 @@ def search_file_post():
 @bp.route('/processing/<option>/<check_status>')
 def waiting_page_get(option, check_status):
     if option == 'queries':
-        g.search_engine.check_for_searching_products()
+        try:
+            g.search_engine.check_for_searching_products()
+        except:
+            return render_template('404.html'), 404
+
         if check_status == 'check_status':
             if g.search_engine.is_products_search_end:
                 data = {
@@ -76,7 +80,11 @@ def waiting_page_get(option, check_status):
         return render_template('waiting_page.html', user=current_user)
 
     if option == 'products':
-        g.search_engine.check_for_searching_offers()
+        try:
+            g.search_engine.check_for_searching_offers()
+        except:
+            return render_template('404.html'), 404
+
         if check_status == 'check_status':
             if g.search_engine.is_offers_search_end:
                 data = {
