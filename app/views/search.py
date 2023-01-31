@@ -40,8 +40,8 @@ def search_file_post():
         if check_file(file_data):
             try:
                 queries, quantities = read_queries_from_file(file_data)
-            except:
-                flash("Errors while processing file")
+            except Exception as e:
+                flash("Errors while processing file " + str(e))
                 return redirect(url_for('bp_home.home_get'))
 
             if current_user.is_authenticated:
@@ -176,17 +176,27 @@ def check_file(file) -> bool:
 def read_queries_from_file(file_data) -> tuple[list[str], list[int]]:
     # A function reads the contents of a text file
     lines = file_data.read().decode('utf-8').split('\n')
+    lines = [line.strip() for line in lines if line and line.strip()]
     queries = []
     quantities = []
+    print(lines)
+    if len(lines) > 10:
+        raise ValueError('Too many lines in the file')
 
     for line in lines:
         if line:  # check if the string is non-empty
-            parts = line.split('\t')    # parts[0] is a query text, parts[1] is number of products in the query
+            parts = line.split('\t', 1)    # parts[0] is a query text, parts[1] is number of products in the query
+
+            if len(parts[0]) > 90:
+                raise ValueError('Too large a query')
+
             queries.append(parts[0])
-            if not any(c.isdigit() for c in parts[1]):
+            try:
+                quantity = int(parts[1].strip())
+            except:
                 quantities.append(1)
             else:
-                quantities.append(int(parts[1].rstrip()))
+                quantities.append(quantity)
 
     return queries, quantities
 
