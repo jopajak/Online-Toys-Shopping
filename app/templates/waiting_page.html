@@ -13,37 +13,44 @@
 <script>
     var i = 0;
     progress_bar = document.getElementById("progress-bar");
-    console.log(progress_bar);
 
+    // function updating progress bar and checking if products/offers are ready
     function progress(){
-      if(i < 90){
-      i = i + 2;
-      fetch(document.URL.concat('/check_status'))
-        .then(response => response.json())
-        .then(data => {
-            let is_done = data['search_end'];
-            console.log(is_done);
-            if (is_done ==='yes'){
-                i=100
-                progress_bar.style.width = i + "%";
-                progress_bar.innerText = i + "%";
-                setTimeout(() => {
-                    document.location.reload();
-                }, 1000);
-            }
-        });
-      progress_bar.style.width = i + "%";
-      progress_bar.innerText = i + "%";
-    }
+        if(i < 90){
+        i = i + 2;
+        fetch(document.URL.concat('/check_status'))
+            .then(response => response.json())
+            .then(data => {
+                let is_done = data['search_end'];
+                if (is_done ==='yes'){
+                    i=100
+                    progress_bar.style.width = i + "%";
+                    progress_bar.innerText = i + "%";
+                    setTimeout(() => {
+                        document.location.reload();
+                    }, 1000);
+                }
+            });
+        progress_bar.style.width = i + "%";
+        progress_bar.innerText = i + "%";
+        }else{
+            fetch(document.URL.concat('/check_status'))
+                .then(response => response.json())
+                .then(data => {
+                let is_done = data['search_end'];
+                if (is_done ==='yes'){
+                    i=100
+                    progress_bar.style.width = i + "%";
+                    progress_bar.innerText = i + "%";
+                    setTimeout(() => {
+                        document.location.reload();
+                    }, 1000);
+                }
+            });
+        }
     setTimeout("progress()", 200);
     }
 
-
     progress();
-
-    //reloading page
-    //setTimeout(() => {
-    //  document.location.reload();
-    //}, 1000);
 </script>
 {% endblock %}
