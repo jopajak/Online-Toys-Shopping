@@ -102,8 +102,8 @@ def create_app():
         db.session.commit()
 
     # Turn on debug mode
-    # app.debug = True
-    # app.wsgi_app = DebuggedApplication(app.wsgi_app)
+    app.debug = True
+    app.wsgi_app = DebuggedApplication(app.wsgi_app)
 
     # Register blueprints (views)
     from .views.home import bp as bp_home

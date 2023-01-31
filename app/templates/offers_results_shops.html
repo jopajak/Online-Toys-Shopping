@@ -12,8 +12,10 @@
                             <hr class="rounded-title">
                         </div>
                         {% for offer in shops_offers[shop] %}
-                            {% for product in products %}
+                            {% set data = namespace(h_bool=False) %}
+                            {% for product in products if data.h_bool == false %}
                                 {% if product.get('product_id')==offer.get('product_id') %}
+                                    {% set data.h_bool = true %}
                                     <div class="row" style="margin-right: 2%">
                                         <div class="col-md-3" style="margin: auto;">
                                             <a href="http://{{product.get('img_link')}}"><img src="http://{{product.get('img_link')}}"></a>
