@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, url_for, render_template, flash, g
+from flask import Blueprint, redirect, url_for, render_template, flash, g, jsonify
 from flask_login import current_user
 
 import datetime
@@ -55,19 +55,42 @@ def search_file_post():
     return redirect(url_for('bp_home.home_get'))
 
 
-@bp.route('/processing/<option>')
-def waiting_page_get(option):
+@bp.route('/processing/<option>/', defaults={'check_status': None})
+@bp.route('/processing/<option>/<check_status>')
+def waiting_page_get(option, check_status):
     if option == 'queries':
         g.search_engine.check_for_searching_products()
-        if g.search_engine.is_products_search_end:
-            return redirect(url_for('bp_search.choose_product_get', product_id=0))
-        return render_template('waiting_page.html')
+        if check_status == 'check_status':
+            if g.search_engine.is_products_search_end:
+                data = {
+                    'search_end': 'yes'
+                }
+            else:
+                data = {
+                    'search_end': 'no'
+                }
+            return jsonify(data)
+        else:
+            if g.search_engine.is_products_search_end:
+                return redirect(url_for('bp_search.choose_product_get', product_id=0))
+        return render_template('waiting_page.html', user=current_user)
 
     if option == 'products':
         g.search_engine.check_for_searching_offers()
-        if g.search_engine.is_offers_search_end:
-            return redirect(url_for('bp_search.offers_result_get'))
-        return render_template('waiting_page.html')
+        if check_status == 'check_status':
+            if g.search_engine.is_offers_search_end:
+                data = {
+                    'search_end': 'yes'
+                }
+            else:
+                data = {
+                    'search_end': 'no'
+                }
+            return jsonify(data)
+        else:
+            if g.search_engine.is_offers_search_end:
+                return redirect(url_for('bp_search.offers_result_get'))
+        return render_template('waiting_page.html', user=current_user)
     return render_template('404.html'), 404
 
 
