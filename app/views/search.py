@@ -40,7 +40,7 @@ def search_file_post():
         if check_file(file_data):
             try:
                 queries, quantities = read_queries_from_file(file_data)
-            except:     # TODO specify Errors
+            except:
                 flash("Errors while processing file")
                 return redirect(url_for('bp_home.home_get'))
 
@@ -191,11 +191,10 @@ def read_queries_from_file(file_data) -> tuple[list[str], list[int]]:
     return queries, quantities
 
 
-# TODO write generate file function
-def generate_file(queries, quantities):
-    pass
-
-
 def save_queries_to_db(queries):
+    total_len = sum(len(query) for query in queries)
+    # checks that the record is not too long to be stored in the db
+    if total_len >= 950:
+        return
     db.session.add(SearchInfo(json.dumps(queries), datetime.datetime.now(), current_user.id))
     db.session.commit()
