@@ -41,7 +41,7 @@ def search_file_post():
             try:
                 queries, quantities = read_queries_from_file(file_data)
             except Exception as e:
-                flash("Errors while processing file " + str(e))
+                flash("Errors while processing file")
                 return redirect(url_for('bp_home.home_get'))
 
             if current_user.is_authenticated:
