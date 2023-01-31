@@ -168,9 +168,10 @@ def offers_result_get():
                                user=current_user, products=products, offers=offers)
 
     if g.search_engine.get_sorting_option() == 'shops':
+        products = g.search_engine.get_products_by_options()
         shops_offers = g.search_engine.get_offers_by_shops()
         return render_template('offers_results_shops.html',
-                               user=current_user, shops_offers=shops_offers)
+                               user=current_user, products=products, shops_offers=shops_offers)
     return render_template('404.html'), 404
 
 
