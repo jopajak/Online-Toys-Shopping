@@ -179,7 +179,7 @@ def read_queries_from_file(file_data) -> tuple[list[str], list[int]]:
     lines = [line.strip() for line in lines if line and line.strip()]
     queries = []
     quantities = []
-    print(lines)
+
     if len(lines) > 10:
         raise ValueError('Too many lines in the file')
 
