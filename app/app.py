@@ -51,6 +51,10 @@ def create_app():
     def page_not_found(e):
         return render_template('404.html'), 404
 
+    @app.errorhandler(500)
+    def page_not_found(e):
+        return render_template('404.html'), 500
+
     from .search_engine import Search
 
     @app.before_request
@@ -98,8 +102,8 @@ def create_app():
         db.session.commit()
 
     # Turn on debug mode
-    app.debug = True
-    app.wsgi_app = DebuggedApplication(app.wsgi_app)
+    # app.debug = True
+    # app.wsgi_app = DebuggedApplication(app.wsgi_app)
 
     # Register blueprints (views)
     from .views.home import bp as bp_home
